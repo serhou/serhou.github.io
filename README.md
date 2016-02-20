@@ -1,3 +1,2 @@
-# serhou.github.io
-最爱导航网初版
+# 最爱导航网 serhou.github.io
 一个简单的导航网站
