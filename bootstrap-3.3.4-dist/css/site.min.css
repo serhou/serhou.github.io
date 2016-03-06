@@ -12,7 +12,7 @@
     line-height: 1;
     text-align: center;
     text-decoration: none;
-    bottom: 20px;
+    bottom: 70px;
     right: 20px;
     overflow: hidden;
     width: 40px;
@@ -55,7 +55,7 @@
 
 @media screen and (min-width: 80px) {
     #scrollBroadSide {
-        bottom: 70px
+        bottom: 20px
     }
 }
 
