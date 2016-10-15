@@ -20,7 +20,7 @@
     <script>
         window.onload = function () {
             document.getElementById("microsoftWeb").checked = true;
-            document.getElementById("myImg").src = "http://www.baidu.com/img/baidu_sylogo1.gif?time=" + new Date().getTime();
+            document.getElementById("myImg").src = "https://www.baidu.com/img/baidu_sylogo1.gif?time=" + new Date().getTime();
         }
 
 
@@ -37,15 +37,15 @@
 
         function changeEngine(searchEngine) {
             if (searchEngine.value == "baiduWeb") {
-                document.getElementById("searchForm").action = "http://www.baidu.com/s";
+                document.getElementById("searchForm").action = "https://www.baidu.com/s";
                 document.getElementById("searchImage").src = "images/bd_logo1.png";
                 document.getElementById("ss").name = "word";
             } else if (searchEngine.value == "microsoftWeb") {
-                document.getElementById("searchForm").action = "http://cn.bing.com/search";
+                document.getElementById("searchForm").action = "https://cn.bing.com/search";
                 document.getElementById("searchImage").src = "images/bing.png";
                 document.getElementById("ss").name = "q";
             } else if (searchEngine.value == "haosouWeb") {
-                document.getElementById("searchForm").action = "http://www.haosou.com/s";
+                document.getElementById("searchForm").action = "https://www.haosou.com/s";
                 document.getElementById("searchImage").src = "images/haosou.png";
                 document.getElementById("ss").name = "q";
 
@@ -95,7 +95,7 @@
 
         <div class="col-xs-12 col-sm-9">
             <div class="jumbotron">
-                <form role="form" autocomplete="on" target="_blank" method="get" action="http://cn.bing.com/search"
+                <form role="form" autocomplete="on" target="_blank" method="get" action="https://cn.bing.com/search"
                       id="searchForm">
                     <div class="row">
                         <div class="col-lg-2">
