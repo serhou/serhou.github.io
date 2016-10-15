@@ -19,7 +19,7 @@
     <script src="js/jquery-2.1.4.js"></script>
     <script>
         window.onload = function () {
-            document.getElementById("baiduWeb").checked = true;
+            document.getElementById("microsoftWeb").checked = true;
             document.getElementById("myImg").src = "http://www.baidu.com/img/baidu_sylogo1.gif?time=" + new Date().getTime();
         }
 
@@ -48,6 +48,11 @@
                 document.getElementById("searchForm").action = "http://www.haosou.com/s";
                 document.getElementById("searchImage").src = "images/haosou.png";
                 document.getElementById("ss").name = "q";
+
+            } else if (searchEngine.value == "sougouWeb") {
+                document.getElementById("searchForm").action = "https://www.sogou.com/web";
+                document.getElementById("searchImage").src = "images/sougou.png";
+                document.getElementById("ss").name = "query";
 
             }
         }
@@ -90,16 +95,16 @@
 
         <div class="col-xs-12 col-sm-9">
             <div class="jumbotron">
-                <form role="form" autocomplete="on" target="_blank" method="get" action="http://www.baidu.com/s"
+                <form role="form" autocomplete="on" target="_blank" method="get" action="http://cn.bing.com/search"
                       id="searchForm">
                     <div class="row">
                         <div class="col-lg-2">
-                            <img class="img-responsive center-block" type="image" src="images/bd_logo1.png" height="45px"
+                            <img class="img-responsive center-block" type="image" src="images/bing.png" height="45px"
                                  id="searchImage"/>
                         </div>
                         <div class="col-lg-10">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="word" id="ss" autocomplete="off"
+                                <input type="text" class="form-control" name="q" id="ss" autocomplete="off"
                                        placeholder="最爱搜索">
                                       <span class="input-group-btn">
                                         <img class="btn btn-default" onclick="document.forms[0].submit()"
@@ -112,10 +117,13 @@
                     <div class="row">
                         <div class="col-lg-2"></div>
                         <div class="col-lg-10">
-                            <input type="radio" name="searchEngine" id="baiduWeb" value="baiduWeb" checked="checked"
+                            
+                            <input type="radio" name="searchEngine" id="microsoftWeb" value="microsoftWeb" checked="checked"
+								   onclick="changeEngine(this);"/><font style="font-size:12px;">必应</font>
+							<input type="radio" name="searchEngine" id="sougouWeb" value="sougouWeb" 
+								   onclick="changeEngine(this);"/><font style="font-size:12px;">搜狗</font>
+							<input type="radio" name="searchEngine" id="baiduWeb" value="baiduWeb" 
                                    onclick="changeEngine(this);"/><font style="font-size:12px;">百度</font>
-                            <input type="radio" name="searchEngine" id="microsoftWeb" value="microsoftWeb"
-                                   onclick="changeEngine(this);"/><font style="font-size:12px;">必应</font>
                             <input type="radio" name="searchEngine" id="haosouWeb" value="haosouWeb"
                                    onclick="changeEngine(this);"/><font style="font-size:12px;">好搜</font>
                         </div>
