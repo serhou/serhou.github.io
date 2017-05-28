@@ -37,19 +37,23 @@
 
         function changeEngine(searchEngine) {
             if (searchEngine.value == "baiduWeb") {
+                document.getElementById("imgHrefId").href = "https://www.baidu.com/";
                 document.getElementById("searchForm").action = "https://www.baidu.com/s";
                 document.getElementById("searchImage").src = "images/bd_logo1.png";
                 document.getElementById("ss").name = "word";
             } else if (searchEngine.value == "microsoftWeb") {
+				document.getElementById("imgHrefId").href = "https://cn.bing.com/";
                 document.getElementById("searchForm").action = "https://cn.bing.com/search";
                 document.getElementById("searchImage").src = "images/bing.png";
                 document.getElementById("ss").name = "q";
             } else if (searchEngine.value == "haosouWeb") {
+				document.getElementById("imgHrefId").href = "https://www.haosou.com/";
                 document.getElementById("searchForm").action = "https://www.haosou.com/s";
                 document.getElementById("searchImage").src = "images/haosou.png";
                 document.getElementById("ss").name = "q";
 
             } else if (searchEngine.value == "sougouWeb") {
+				document.getElementById("imgHrefId").href = "https://www.sogou.com/";
                 document.getElementById("searchForm").action = "https://www.sogou.com/web";
                 document.getElementById("searchImage").src = "images/sougou.png";
                 document.getElementById("ss").name = "query";
@@ -99,8 +103,9 @@
                       id="searchForm">
                     <div class="row">
                         <div class="col-lg-2">
-                            <img class="img-responsive center-block" type="image" src="images/bing.png" height="45px"
-                                 id="searchImage"/>
+                            <a target="_blank" href="https://cn.bing.com/" id="imgHrefId">
+								<img class="img-responsive center-block" type="image" src="images/bing.png" height="45px" id="searchImage"/>
+							</a>
                         </div>
                         <div class="col-lg-10">
                             <div class="input-group">
