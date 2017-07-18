@@ -85,7 +85,7 @@
             </div>
             <!-- Carousel
    ================================================== -->
-            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel" style="width: 265px;">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
                     <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -192,10 +192,17 @@
                 $(this).scrollTop() > 300 ? $(".gotop-btn").css("display", "block") : $(".gotop-btn").hide()
             }
     )
+	function changeClass() {
+    	if ("sa sa-angle-right" === $("#iconImg").attr("class")) {
+    		$("#iconImg").attr("class", "sa sa-angle-left");
+    	} else {
+			$("#iconImg").attr("class", "sa sa-angle-right");
+    	}
+    }
 </script>
 <p class="pull-right visible-xs">
-    <a style="position: fixed; display: block;" href="#" data-toggle="offcanvas" id="scrollBroadSide"><i
-            class="sa sa-angle-up"></i></a>
+     <a style="position: fixed; display: block;" href="#" data-toggle="offcanvas" id="scrollBroadSide" onclick="changeClass()"><i
+            class="sa sa-angle-left" id="iconImg"></i></a>
 </p>
 <a style="position: fixed; display: none;" class="gotop-btn" href="#top" id="scrollUp"><i
         class="fa fa-angle-up"></i></a>

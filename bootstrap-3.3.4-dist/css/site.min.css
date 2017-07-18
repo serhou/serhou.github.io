@@ -79,8 +79,12 @@
     text-rendering: auto;
 }
 
-.sa-angle-up::before {
+.sa-angle-left::before {
     content: "";
+}
+
+.sa-angle-right::before {
+    content: "";
 }
 
 .sa {
