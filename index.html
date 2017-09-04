@@ -58,7 +58,13 @@
                 document.getElementById("searchImage").src = "images/sougou.png";
                 document.getElementById("ss").name = "query";
 
-            }
+            } else if (searchEngine.value == "stackoverflowWeb") {
+				document.getElementById("imgHrefId").href = "https://stackoverflow.com/";
+                document.getElementById("searchForm").action = "https://stackoverflow.com/search";
+                document.getElementById("searchImage").src = "images/stackoverflow.png";
+                document.getElementById("ss").name = "q";
+
+            } 
         }
     </script>
 
@@ -131,6 +137,8 @@
                                    onclick="changeEngine(this);"/><font style="font-size:12px;">百度</font>
                             <input type="radio" name="searchEngine" id="haosouWeb" value="haosouWeb"
                                    onclick="changeEngine(this);"/><font style="font-size:12px;">好搜</font>
+                            <input type="radio" name="searchEngine" id="stackoverflowWeb" value="stackoverflowWeb"
+                                   onclick="changeEngine(this);"/><font style="font-size:12px;">stackoverflow</font>
                         </div>
                     </div>
                 </form>
