@@ -21,7 +21,7 @@
         window.onload = function () {
             if (navigator.onLine) {
                 //document.getElementById("weather").innerHTML="<h4>亲爱的，你的设备已联网了哦</h4>";
-                document.getElementById("weather").innerHTML = '<iframe width="225" scrolling="no" height="90" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=7&icon=1&num=3"></iframe>';
+                document.getElementById("weather").innerHTML = '<iframe width="225" scrolling="no" height="90" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=7&icon=1&num=3&number=Math.random()"></iframe>';
             } else {
                 document.getElementById("weather").innerHTML = "<h5 style='height: 90px;width: 225px;text-align: center'>亲爱的，你的设备没有联网哦</h5>";
             }
