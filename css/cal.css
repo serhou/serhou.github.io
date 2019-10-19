@@ -1,0 +1,46 @@
+.mod-calendar{
+	position: relative;
+	width: 265px;
+	/* background: #57abff; */
+	background: #6F5499;
+	overflow: hidden;
+	*zoom:1;
+	border-radius: 5px;
+	
+}
+.mod-calendar a:hover{
+	text-decoration: none;
+}
+.mod-calendar .info{
+	width: 265px;
+	margin-top: 15px;
+	text-align: center;
+	color: #fff;
+	*zoom:1;
+}
+.mod-calendar .info p{
+	line-height: 22px;
+}
+.mod-calendar .info .day{
+	width: 80px;
+	height: 80px;
+	margin: 15px auto 7px;
+	line-height: 80px;
+	font-size: 80px;
+	border-radius: 2px;
+}
+.mod-calendar .info .festival{
+	margin: 15px 10px;
+	padding-top: 15px;
+	border-top: 1px dotted #fefefe;
+}
+
+@media screen and (max-width: 359px) {
+	.mod-time{
+		width: 288px;
+	}
+	.mod-time .map{
+		width: 320px;
+		margin-left: -16px;
+	}
+}
