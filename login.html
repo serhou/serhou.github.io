@@ -16,17 +16,6 @@
     <link href="bootstrap-3.3.4-dist/css/offcanvas.css" rel="stylesheet">
     <link href="bootstrap-3.3.4-dist/css/carousel.css" rel="stylesheet">
     <link rel="stylesheet" href="bootstrap-3.3.4-dist/css/site.min.css?v5">
-    <script>
-        //判断客户端是否联网
-        window.onload = function () {
-            if (navigator.onLine) {
-                //document.getElementById("weather").innerHTML="<h4>亲爱的，你的设备已联网了哦</h4>";
-                document.getElementById("weather").innerHTML = '<iframe width="225" scrolling="no" height="90" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=7&icon=1&num=3&number=Math.random()"></iframe>';
-            } else {
-                document.getElementById("weather").innerHTML = "<h5 style='height: 90px;width: 225px;text-align: center'>亲爱的，你的设备没有联网哦</h5>";
-            }
-        }
-    </script>
     <style>
         table tr td a {
             color: #6F5499;
@@ -106,11 +95,21 @@
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
 
             <div class="panel panel-info" style="width: 265px;">
-                <div class="panel-heading">最爱天气预报</div>
-                <div id="weather" class="panel-body">
-
-                </div>
-                <div class="panel-footer">天气来源：天气网</div>
+                <div id="he-plugin-standard"></div>
+                        <script>
+                        WIDGET = {
+                            CONFIG: {
+                                "layout": 2,
+                                "width": "265",
+                                "height": "270",
+                                "background": 1,
+                                "dataColor": "FFFFFF",
+                                "borderRadius": 5,
+                                "key": "c9a272ae2f174295a30b913b237a62b8"
+                            }
+                        }
+                        </script>
+                        <script src="https://widget.heweather.net/standard/static/js/he-standard-common.js?v=1.1"></script>
             </div>
             <!-- Carousel
    ================================================== -->
