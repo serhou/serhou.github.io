@@ -35,6 +35,11 @@
 	border-top: 1px dotted #fefefe;
 }
 
+.changecal {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
 @media screen and (max-width: 359px) {
 	.mod-time{
 		width: 288px;

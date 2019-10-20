@@ -862,6 +862,9 @@
 <script src="bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
 <script src="bootstrap-3.3.4-dist/js/offcanvas.js"></script>
 <!--<script src="http://cdn.bootcss.com/scrollup/2.4.0/jquery.scrollUp.min.js"></script>-->
+<script src="js/poems.js"></script>
+<script src="js/cal.js"></script>
+<script src="laydate/laydate.js"></script>
 <script type="text/javascript">
     $(window).scroll(
             function () {
@@ -874,10 +877,13 @@
     	} else {
 			$("#iconImg").attr("class", "sa sa-angle-right");
     	}
-    }
+    } 
+    
+    //页面加载时先渲染一次
+    window.onload = reloadlaydate();
+
+
 </script>
-<script src="js/poems.js"></script>
-<script src="js/cal.js"></script>
 <p class="pull-right visible-xs">
     <a style="position: fixed; display: block;" href="#" data-toggle="offcanvas" id="scrollBroadSide" onclick="changeClass()"><i
             class="sa sa-angle-left" id="iconImg"></i></a>
