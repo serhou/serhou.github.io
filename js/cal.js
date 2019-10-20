@@ -903,6 +903,9 @@ var getData = (function () {
 				info['festival'] += ' ' + _festival2[code4];
 			}
 		}
+
+		//黄历宜忌
+		info['almanac'] = getAlmanac(obj);
 		//名人名言
 		if (true) {
 			info['festival'] += ' ' + '今日诗：' + getPoem(obj);
@@ -957,7 +960,8 @@ var getData = (function () {
 		}
 		return {
 			'date': getDateInfo(date), //当前日历选中日期
-			'data': data
+			'data': data,
+			'days': days //当前月份天数
 		};
 	});
 })();
@@ -1246,10 +1250,13 @@ var holiday = {
 var format = function (date) {
 	var result = getData(date);
 	var date = result['date'];
+	var days = result['days'];//每月的天数
+	var bigorsmall = days === 31 ? '大' : '小';
 	_data = result['data'];
+	var almanac = date['almanac'];
 	var map = {
-		'work': '- 班',
-		'holiday': '- 休'
+		'work': ' 班',
+		'holiday': ' 休'
 	}
 	var html = '<table>\
 			<thead>\
@@ -1294,9 +1301,9 @@ var format = function (date) {
 	var workorothers = map[date['sign']] == undefined ? '' : map[date['sign']];
 	$info.innerHTML = '<p><strong id="changecal" class="changecal">' + date['cYear'] + '-' + (date['cMonth'] > 9 ? date['cMonth'] : '0' + date['cMonth']) + '-' + (date['cDay'] > 9 ? date['cDay'] : '0' + date['cDay']) + '</strong> <span class="glyphicon glyphicon-pencil"></span><strong>' + ' ' + date['ncWeek'] + '</strong></p>\
 		<div class="day">' + date['cDay'] + '</div>\
-		<div class="sub"><p>' + date['IMonthCn'] + date['IDayCn'] + ' ' + workorothers + '</p>\
-		<p>' + date['gzYear'] + '年 【' + date['Animal'] + '年】</p>\
-		<p>' + date['gzMonth'] + '月 ' + date['gzDay'] + '日</p></div>\
+		<div class="sub"><p>' + date['cMonth'] +'月' + bigorsmall + ' 农历' + date['IMonthCn'] + date['IDayCn'] + ' ' + workorothers + '</p>\
+		<p>' + date['gzYear'] + '年 【' + date['Animal'] + '年】\
+		' + date['gzMonth'] + '月 ' + date['gzDay'] + '日</p></div>' + '<div><span class="suitable">宜</span> '+almanac['suitable']+' <span class="inappropriate">忌</span> '+almanac['inappropriate']+'</div>' + '\
 		<div class="festival"><p>' + date['festival'].replace(/\s/g, '</p><p>') + '</p></div>';
 	//$table.innerHTML = html;
 };

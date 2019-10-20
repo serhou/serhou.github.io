@@ -1453,10 +1453,10 @@ var getPoem = function (vdate) {
 	//当前日期取上时、分、秒、毫秒
 	var currentDate = new Date();
 	//传入的只有日期，后面拼上时、分、秒、毫秒
-	var pDate = new Date(vdate.year, vdate.month - 1, vdate.day, 
-		currentDate.getHours(), 
-		currentDate.getMinutes(), 
-		currentDate.getSeconds(), 
+	var pDate = new Date(vdate.year, vdate.month - 1, vdate.day,
+		currentDate.getHours(),
+		currentDate.getMinutes(),
+		currentDate.getSeconds(),
 		currentDate.getMilliseconds());
 	//时间
 	var currentTime = pDate.getTime();
@@ -1465,4 +1465,139 @@ var getPoem = function (vdate) {
 	//取模循环
 	var p = poems[(days % (poems.length))];
 	return p;
+}
+
+//黄历宜忌
+var almanac = new Array(
+	"坐井观天",
+	"厚积薄发",
+	"不舞之鹤",
+	"坐怀不乱",
+	"作茧自缚",
+	"白龙鱼服",
+	"长绳系日",
+	"醉生梦死",
+	"一飞冲天",
+	"投鼠忌器",
+	"否极泰来",
+	"叶公好龙",
+	"并日而食",
+	"作壁上观",
+	"多难兴邦",
+	"作舍道边",
+	"走马看花",
+	"左右逢源",
+	"左顾右盼",
+	"沐猴而冠",
+	"走马章台",
+	"哀哀父母",
+	"做张做势",
+	"尊师重道",
+	"作奸犯科",
+	"左思右想",
+	"做贼心虚",
+	"缘木求鱼",
+	"趋之若鹜",
+	"不一而足",
+	"春风化雨",
+	"过犹不及",
+	"安之若素",
+	"步步为营",
+	"节哀顺变",
+	"苦心孤诣",
+	"讳莫如深",
+	"兔死狗烹",
+	"独善其身",
+	"踽踽独行",
+	"风尘仆仆",
+	"足智多谋",
+	"相濡以沫",
+	"锱铢必较",
+	"兔死狐悲",
+	"蹉跎岁月",
+	"披星戴月",
+	"望穿秋水",
+	"聊胜于无",
+	"不以为然",
+	"刻舟求剑",
+	"孜孜不倦",
+	"白云苍狗",
+	"临渊羡鱼",
+	"投桃报李",
+	"水滴石穿",
+	"不分玉石",
+	"龙马精神",
+	"胸有成竹",
+	"坐言起行",
+	"祸起萧墙",
+	"面面相觑",
+	"蝇营狗苟",
+	"历历在目",
+	"大中至正",
+	"作嫁衣裳",
+	"大智若愚",
+	"牝鸡司晨",
+	"马到成功",
+	"按部就班",
+	"作贼心虚",
+	"声色犬马",
+	"栉风沐雨",
+	"钻牛角尖",
+	"豆蔻年华",
+	"痛定思痛",
+	"自怨自艾",
+	"鱼贯而入",
+	"波谲云诡",
+	"百巧千穷",
+	"车水马龙",
+	"方兴未艾",
+	"草长莺飞",
+	"火中取栗",
+	"危言危行",
+	"夙兴夜寐",
+	"安家落户",
+	"飞扬跋扈",
+	"待价而沽",
+	"管中窥豹",
+	"匪夷所思",
+	"蠢蠢欲动",
+	"坐立不安",
+	"含饴弄孙",
+	"诚惶诚恐",
+	"嗤之以鼻",
+	"指雁为羹",
+	"五子登科",
+	"笔走龙蛇",
+	"附庸风雅",
+	"狡兔三窟",
+	"长袖善舞",
+	"学富五车",
+	"美轮美奂",
+	"大喜大悲"
+);
+
+
+//获取当日宜忌
+var getAlmanac = function (vdate) {
+	//以2018-01-01 00:00:00时间为开始，每日一句诗，诗集用完了，从头开始
+	//开始时间，年月日，月份从0开始
+	var startTime = new Date(2018, 0, 1).getTime();
+	//当前日期取上时、分、秒、毫秒
+	var currentDate = new Date();
+	//传入的只有日期，后面拼上时、分、秒、毫秒
+	var pDate = new Date(vdate.year, vdate.month - 1, vdate.day,
+		currentDate.getHours(),
+		currentDate.getMinutes(),
+		currentDate.getSeconds(),
+		currentDate.getMilliseconds());
+	//时间
+	var currentTime = pDate.getTime();
+	//计算间隔天数，取绝对值后并取整
+	var days = Math.floor(Math.abs(currentTime - startTime) / 1000 / 60 / 60 / 24);
+	//取模循环
+	var a = {
+		"suitable": almanac[(days % (almanac.length))],
+		"inappropriate": almanac[((days+128) % (almanac.length))]
+	}
+	return a;
 }

@@ -40,6 +40,35 @@
 	cursor: pointer;
 }
 
+.suitable {
+	width: 28px;
+	height: 23px;
+	text-align: center;
+	font-size: 14px;
+	font-weight: bolder;
+	background-color: #d70b30;
+	margin-right: 3px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	color: #fff;
+	display: inline-block;
+}
+
+.inappropriate {
+	width: 28px;
+	height: 23px;
+	text-align: center;
+	font-size: 14px;
+	font-weight: bolder;
+	background-color: #0cc80b;;
+	margin-right: 3px;
+	margin-left: 3px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	color: #fff;
+	display: inline-block;
+}
+
 @media screen and (max-width: 359px) {
 	.mod-time{
 		width: 288px;
