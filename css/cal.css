@@ -103,6 +103,10 @@
 	-moz-outline:none;  
 }
 
+.vfestival {
+	color: yellow;
+}
+
 
 @media screen and (max-width: 359px) {
 	.mod-time{

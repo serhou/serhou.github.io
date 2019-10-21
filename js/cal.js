@@ -908,7 +908,7 @@ var getData = (function () {
 		info['almanac'] = getAlmanac(obj);
 		//名人名言
 		if (true) {
-			info['festival'] += ' ' + '今日诗：' + getPoem(obj);
+			info['poem'] = '今日诗：' + getPoem(obj);
 		}
 		info['festival'] = info['festival'].trim();
 		//放假、调休等标记
@@ -1302,12 +1302,18 @@ var format = function (date) {
 	if(workorothers ){
 		workorothers = '<span class="workorothers">' + workorothers + '</span>' ;
 	}
+	//二十四节气
+	var isTerm  = date['isTerm'];
+	var term = '';
+	if(isTerm){
+		term = '<p class="vfestival">' + date['Term'] + '</p>';
+	}
 	$info.innerHTML = '<p><a class="triangle-left" href="javascript:void(0);" οnfοcus="this.blur();" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' -1);"><span class="glyphicon glyphicon-triangle-left"></span></a><strong id="changecal" class="changecal">' + date['cYear'] + '-' + (date['cMonth'] > 9 ? date['cMonth'] : '0' + date['cMonth']) + '-' + (date['cDay'] > 9 ? date['cDay'] : '0' + date['cDay']) + '</strong> <span class="glyphicon glyphicon-pencil"></span><strong>' + ' ' + date['ncWeek'] + '</strong><a class="triangle-right" href="javascript:void(0);" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' 1);"><span class="glyphicon glyphicon-triangle-right"></span></a></p>\
 		<div class="day">' + date['cDay'] + '</div> \
 		<div class="sub"><p>' + date['cMonth'] +'月' + bigorsmall + ' 农历' + date['IMonthCn'] + date['IDayCn'] + ' ' + workorothers + '</p>\
 		<p>' + date['gzYear'] + '年 【' + date['Animal'] + '年】\
 		' + date['gzMonth'] + '月 ' + date['gzDay'] + '日</p></div>' + '<div><span class="suitable">宜</span> '+almanac['suitable']+' <span class="inappropriate">忌</span> '+almanac['inappropriate']+'</div>' + '\
-		<div class="festival"><p>' + date['festival'].replace(/\s/g, '</p><p>') + '</p></div>';
+		<div class="festival">' + term + (date['festival'] == '' ? '' : '<p class="vfestival">' + date['festival'].replace(/\s/g, '</p><p  class="vfestival">') + '</p>') + '<p>' + date['poem'] + '</p></div>';
 	//$table.innerHTML = html;
 };
 
