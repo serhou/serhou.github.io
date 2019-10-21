@@ -1299,8 +1299,8 @@ var format = function (date) {
 	//$month.value = date['cMonth'];
 	//上班还是休息
 	var workorothers = map[date['sign']] == undefined ? '' : map[date['sign']];
-	$info.innerHTML = '<p><strong id="changecal" class="changecal">' + date['cYear'] + '-' + (date['cMonth'] > 9 ? date['cMonth'] : '0' + date['cMonth']) + '-' + (date['cDay'] > 9 ? date['cDay'] : '0' + date['cDay']) + '</strong> <span class="glyphicon glyphicon-pencil"></span><strong>' + ' ' + date['ncWeek'] + '</strong></p>\
-		<div class="day">' + date['cDay'] + '</div>\
+	$info.innerHTML = '<p><a class="triangle-left" href="javascript:void(0);" οnfοcus="this.blur();" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' -1);"><span class="glyphicon glyphicon-triangle-left"></span></a><strong id="changecal" class="changecal">' + date['cYear'] + '-' + (date['cMonth'] > 9 ? date['cMonth'] : '0' + date['cMonth']) + '-' + (date['cDay'] > 9 ? date['cDay'] : '0' + date['cDay']) + '</strong> <span class="glyphicon glyphicon-pencil"></span><strong>' + ' ' + date['ncWeek'] + '</strong><a class="triangle-right" href="javascript:void(0);" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' 1);"><span class="glyphicon glyphicon-triangle-right"></span></a></p>\
+		<div class="day">' + date['cDay'] + '</div> \
 		<div class="sub"><p>' + date['cMonth'] +'月' + bigorsmall + ' 农历' + date['IMonthCn'] + date['IDayCn'] + ' ' + workorothers + '</p>\
 		<p>' + date['gzYear'] + '年 【' + date['Animal'] + '年】\
 		' + date['gzMonth'] + '月 ' + date['gzDay'] + '日</p></div>' + '<div><span class="suitable">宜</span> '+almanac['suitable']+' <span class="inappropriate">忌</span> '+almanac['inappropriate']+'</div>' + '\
@@ -1328,4 +1328,35 @@ format();
 			reloadlaydate();
 		}
 	});
+}
+
+
+function changeDay(cYear, cMonth, cDay,offsite) {
+	//当前日期
+	var cdate = new Date(cYear, cMonth - 1, cDay);
+	var goYear = '';
+	var goMonth = '';
+	var goDay = '';
+	if(offsite === 1){
+		//后一天日期
+		var ndate = new Date(cdate.getTime() + 24 * 60 * 60 * 1000);
+		goYear = ndate.getFullYear();
+		goMonth = ndate.getMonth();
+		goDay = ndate.getDate();
+	}else{
+		//前一天日期
+		var pdate = new Date(cdate.getTime() - 24 * 60 * 60 * 1000);
+		goYear = pdate.getFullYear();
+		goMonth = pdate.getMonth();
+		goDay = pdate.getDate();
+	}
+	var vdate = {
+		"year": goYear,
+		"month": goMonth + 1,
+		"day": goDay
+	};
+	//切换万年历
+	format(vdate);  
+	//递归调用解决laydate不能重新渲染问题
+	reloadlaydate();
 }
