@@ -1299,6 +1299,9 @@ var format = function (date) {
 	//$month.value = date['cMonth'];
 	//上班还是休息
 	var workorothers = map[date['sign']] == undefined ? '' : map[date['sign']];
+	if(workorothers ){
+		workorothers = '<span class="workorothers">' + workorothers + '</span>' ;
+	}
 	$info.innerHTML = '<p><a class="triangle-left" href="javascript:void(0);" οnfοcus="this.blur();" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' -1);"><span class="glyphicon glyphicon-triangle-left"></span></a><strong id="changecal" class="changecal">' + date['cYear'] + '-' + (date['cMonth'] > 9 ? date['cMonth'] : '0' + date['cMonth']) + '-' + (date['cDay'] > 9 ? date['cDay'] : '0' + date['cDay']) + '</strong> <span class="glyphicon glyphicon-pencil"></span><strong>' + ' ' + date['ncWeek'] + '</strong><a class="triangle-right" href="javascript:void(0);" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' 1);"><span class="glyphicon glyphicon-triangle-right"></span></a></p>\
 		<div class="day">' + date['cDay'] + '</div> \
 		<div class="sub"><p>' + date['cMonth'] +'月' + bigorsmall + ' 农历' + date['IMonthCn'] + date['IDayCn'] + ' ' + workorothers + '</p>\

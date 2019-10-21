@@ -52,6 +52,7 @@
 	padding-bottom: 1px;
 	color: #fff;
 	display: inline-block;
+	border-radius: 2px;
 }
 
 .inappropriate {
@@ -67,6 +68,21 @@
 	padding-bottom: 1px;
 	color: #fff;
 	display: inline-block;
+	border-radius: 2px;
+}
+
+.workorothers {
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	font-size: 12px;
+	font-weight: bolder;
+	background-color: hsl(34, 88%, 46%);
+	margin-right: 2px;
+	margin-left: 2px;
+	color: #fff;
+	display: inline-block;
+	border-radius: 50px;
 }
 
 .triangle-left {
