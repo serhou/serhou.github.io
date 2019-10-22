@@ -105,11 +105,17 @@ var getData = (function () {
 			0x0e968, 0x0d520, 0x0daa0, 0x16aa6, 0x056d0, 0x04ae0, 0x0a9d4, 0x0a2d0, 0x0d150, 0x0f252,
 			0x0d520
 		],
+		//公历每个月份的天数普通表
 		solarMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+		//天干地支之天干速查表  ["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"]
 		Gan: ["\u7532", "\u4e59", "\u4e19", "\u4e01", "\u620a", "\u5df1", "\u5e9a", "\u8f9b", "\u58ec", "\u7678"],
+		//天干地支之地支速查表 ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"]
 		Zhi: ["\u5b50", "\u4e11", "\u5bc5", "\u536f", "\u8fb0", "\u5df3", "\u5348", "\u672a", "\u7533", "\u9149", "\u620c", "\u4ea5"],
+		//干地支之地支速查表<=>生肖 ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"]
 		Animals: ["\u9f20", "\u725b", "\u864e", "\u5154", "\u9f99", "\u86c7", "\u9a6c", "\u7f8a", "\u7334", "\u9e21", "\u72d7", "\u732a"],
+		//24节气速查表 ["小寒","大寒","立春","雨水","惊蛰","春分","清明","谷雨","立夏","小满","芒种","夏至","小暑","大暑","立秋","处暑","白露","秋分","寒露","霜降","立冬","小雪","大雪","冬至"]
 		solarTerm: ["\u5c0f\u5bd2", "\u5927\u5bd2", "\u7acb\u6625", "\u96e8\u6c34", "\u60ca\u86f0", "\u6625\u5206", "\u6e05\u660e", "\u8c37\u96e8", "\u7acb\u590f", "\u5c0f\u6ee1", "\u8292\u79cd", "\u590f\u81f3", "\u5c0f\u6691", "\u5927\u6691", "\u7acb\u79cb", "\u5904\u6691", "\u767d\u9732", "\u79cb\u5206", "\u5bd2\u9732", "\u971c\u964d", "\u7acb\u51ac", "\u5c0f\u96ea", "\u5927\u96ea", "\u51ac\u81f3"],
+		//1900-2100各年的24节气日期速查表
 		sTermInfo: ['9778397bd097c36b0b6fc9274c91aa', '97b6b97bd19801ec9210c965cc920e', '97bcf97c3598082c95f8c965cc920f',
 			'97bd0b06bdb0722c965ce1cfcc920f', 'b027097bd097c36b0b6fc9274c91aa', '97b6b97bd19801ec9210c965cc920e',
 			'97bcf97c359801ec95f8c965cc920f', '97bd0b06bdb0722c965ce1cfcc920f', 'b027097bd097c36b0b6fc9274c91aa',
@@ -178,9 +184,13 @@ var getData = (function () {
 			'7f07e7f0e47f531b0723b0b6fb0721', '7f0e26665b66a449801e9808297c35', '665f67f0e37f1489801eb072297c35',
 			'7ec967f0e37f14998082b0787b06bd', '7f07e7f0e47f531b0723b0b6fb0721', '7f0e27f1487f531b0b0bb0b6fb0722'
 		],
+		//数字转中文速查表 ['日','一','二','三','四','五','六','七','八','九','十']
 		nStr1: ["\u65e5", "\u4e00", "\u4e8c", "\u4e09", "\u56db", "\u4e94", "\u516d", "\u4e03", "\u516b", "\u4e5d", "\u5341"],
+		//日期转农历称呼速查表 ['初','十','廿','卅']
 		nStr2: ["\u521d", "\u5341", "\u5eff", "\u5345"],
+		//月份转农历称呼速查表 ['正','一','二','三','四','五','六','七','八','九','十','冬','腊']
 		nStr3: ["\u6b63", "\u4e8c", "\u4e09", "\u56db", "\u4e94", "\u516d", "\u4e03", "\u516b", "\u4e5d", "\u5341", "\u51ac", "\u814a"],
+		//返回农历y年一整年的总天数
 		lYearDays: function (y) {
 			var i, sum = 348;
 			for (i = 0x8000; i > 0x8; i >>= 1) {
@@ -188,21 +198,25 @@ var getData = (function () {
 			}
 			return (sum + calendar.leapDays(y));
 		},
+		//返回农历y年闰月是哪个月；若y年没有闰月 则返回0
 		leapMonth: function (y) {
 			return (calendar.lunarInfo[y - 1900] & 0xf);
 		},
+		//返回农历y年闰月的天数 若该年没有闰月则返回0
 		leapDays: function (y) {
 			if (calendar.leapMonth(y)) {
 				return ((calendar.lunarInfo[y - 1900] & 0x10000) ? 30 : 29);
 			}
 			return (0);
 		},
+		//返回农历y年m月（非闰月）的总天数，计算m为闰月时的天数请使用leapDays方法
 		monthDays: function (y, m) {
 			if (m > 12 || m < 1) {
 				return -1
 			}
 			return ((calendar.lunarInfo[y - 1900] & (0x10000 >> m)) ? 30 : 29);
 		},
+		//返回公历(!)y年m月的天数
 		solarDays: function (y, m) {
 			if (m > 12 || m < 1) {
 				return -1
@@ -214,9 +228,11 @@ var getData = (function () {
 				return (calendar.solarMonth[ms]);
 			}
 		},
+		//传入offset偏移量返回干支
 		toGanZhi: function (offset) {
 			return (calendar.Gan[offset % 10] + calendar.Zhi[offset % 12]);
 		},
+		//传入公历(!)y年获得该年第n个节气的公历日期
 		getTerm: function (y, n) {
 			if (y < 1900 || y > 2100) {
 				return -1;
@@ -261,6 +277,7 @@ var getData = (function () {
 			];
 			return parseInt(_calday[n - 1]);
 		},
+		//传入农历数字月份返回汉语通俗表示法
 		toChinaMonth: function (m) {
 			if (m > 12 || m < 1) {
 				return -1
@@ -269,6 +286,7 @@ var getData = (function () {
 			s += "\u6708";
 			return s;
 		},
+		//传入农历日期数字返回汉字表示法
 		toChinaDay: function (d) {
 			var s;
 			switch (d) {
@@ -287,16 +305,21 @@ var getData = (function () {
 			}
 			return (s);
 		},
+		//年份转生肖[!仅能大致转换] => 精确划分生肖分界线是“立春”
 		getAnimal: function (y) {
 			return calendar.Animals[(y - 4) % 12]
 		},
-		solar2lunar: function (y, m, d) {
+		//传入阳历年月日获得详细的公历、农历object信息 <=>JSON 公历转农历：calendar.solar2lunar(1987,11,01);
+		solar2lunar: function (y, m, d) {//参数区间1900.1.31~2100.12.31
+			//年份限定、上限
 			if (y < 1900 || y > 2100) {
-				return -1;
+				return -1;// undefined转换为数字变为NaN
 			}
+			//公历传参最下限
 			if (y == 1900 && m == 1 && d < 31) {
 				return -1;
 			}
+		    //未传参  获得当天
 			if (!y) {
 				var objDate = new Date();
 			} else {
@@ -304,6 +327,7 @@ var getData = (function () {
 			}
 			var i, leap = 0,
 				temp = 0;
+			//修正ymd参数
 			var y = objDate.getFullYear(),
 				m = objDate.getMonth() + 1,
 				d = objDate.getDate();
@@ -316,32 +340,40 @@ var getData = (function () {
 				offset += temp;
 				i--;
 			}
+			//是否今天
 			var isTodayObj = new Date(),
 				isToday = false;
 			if (isTodayObj.getFullYear() == y && isTodayObj.getMonth() + 1 == m && isTodayObj.getDate() == d) {
 				isToday = true;
 			}
+			//星期几
 			var nWeek = objDate.getDay(),
 				cWeek = calendar.nStr1[nWeek];
+			//数字表示周几顺应天朝周一开始的惯例
 			if (nWeek == 0) {
 				nWeek = 7;
 			}
+			//农历年
 			var year = i;
-			var leap = calendar.leapMonth(i);
+			var leap = calendar.leapMonth(i);//闰哪个月
 			var isLeap = false;
+			//效验闰月
 			for (i = 1; i < 13 && offset > 0; i++) {
+				//闰月
 				if (leap > 0 && i == (leap + 1) && isLeap == false) {
 					--i;
 					isLeap = true;
-					temp = calendar.leapDays(year);
+					temp = calendar.leapDays(year);//计算农历闰月天数
 				} else {
-					temp = calendar.monthDays(year, i);
+					temp = calendar.monthDays(year, i);//计算农历普通月天数
 				}
+				//解除闰月
 				if (isLeap == true && i == (leap + 1)) {
 					isLeap = false;
 				}
 				offset -= temp;
 			}
+			// 闰月导致数组下标重叠取反
 			if (offset == 0 && leap > 0 && i == leap + 1) {
 				if (isLeap) {
 					isLeap = false;
@@ -354,18 +386,24 @@ var getData = (function () {
 				offset += temp;
 				--i;
 			}
+			//农历月
 			var month = i;
+			//农历日
 			var day = offset + 1;
+			//天干地支处理
 			var sm = m - 1;
 			var term3 = calendar.getTerm(year, 3);
 			var gzY = calendar.toGanZhi(year - 4);
 			gzY = calendar.toGanZhi(year - 4); //modify
+			//当月的两个节气
 			var firstNode = calendar.getTerm(y, (m * 2 - 1));
 			var secondNode = calendar.getTerm(y, (m * 2));
+			//依据12节气修正干支月
 			var gzM = calendar.toGanZhi((y - 1900) * 12 + m + 11);
 			if (d >= firstNode) {
 				gzM = calendar.toGanZhi((y - 1900) * 12 + m + 12);
 			}
+			//传入的日期的节气与否
 			var isTerm = false;
 			var Term = null;
 			if (firstNode == d) {
@@ -376,6 +414,7 @@ var getData = (function () {
 				isTerm = true;
 				Term = calendar.solarTerm[m * 2 - 1];
 			}
+			//日柱 当月一日与 1900/1/1 相差天数
 			var dayCyclical = Date.UTC(y, sm, 1, 0, 0, 0, 0) / 86400000 + 25567 + 10;
 			var gzD = calendar.toGanZhi(dayCyclical + d - 1);
 			return {
@@ -384,6 +423,7 @@ var getData = (function () {
 				'lDay': day,
 				'Animal': calendar.getAnimal(year),
 				'IMonthCn': (isLeap ? "\u95f0" : '') + calendar.toChinaMonth(month),
+				'IMonthCnDays': (isLeap ? calendar.leapDays(year) : calendar.monthDays(year, month)),//农历月份天数
 				'IDayCn': calendar.toChinaDay(day),
 				'cYear': y,
 				'cMonth': m,
@@ -1309,8 +1349,8 @@ var format = function (date) {
 		term = '<p class="vfestival">' + date['Term'] + '</p>';
 	}
 	$info.innerHTML = '<p><a class="triangle-left" href="javascript:void(0);" οnfοcus="this.blur();" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' -1);"><span class="glyphicon glyphicon-triangle-left"></span></a><strong id="changecal" class="changecal">' + date['cYear'] + '-' + (date['cMonth'] > 9 ? date['cMonth'] : '0' + date['cMonth']) + '-' + (date['cDay'] > 9 ? date['cDay'] : '0' + date['cDay']) + '</strong> <span class="glyphicon glyphicon-pencil"></span><strong>' + ' ' + date['ncWeek'] + '</strong><a class="triangle-right" href="javascript:void(0);" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' 1);"><span class="glyphicon glyphicon-triangle-right"></span></a></p>\
-		<div class="day">' + date['cDay'] + '</div> \
-		<div class="sub"><p>' + date['cMonth'] +'月' + bigorsmall + ' 农历' + date['IMonthCn'] + date['IDayCn'] + ' ' + workorothers + '</p>\
+		<div><span class="day">' + date['cDay'] + '</span>' + workorothers + '</div> \
+		<div class="sub"><p>公历' + date['cMonth'] +'月' + bigorsmall + ' 农历' + date['IMonthCn'] + (date['IMonthCnDays'] == 30 ? '(大)' : '(小)') + date['IDayCn'] + '</p>\
 		<p>' + date['gzYear'] + '年 【' + date['Animal'] + '年】\
 		' + date['gzMonth'] + '月 ' + date['gzDay'] + '日</p></div>' + '<div><span class="suitable">宜</span> '+almanac['suitable']+' <span class="inappropriate">忌</span> '+almanac['inappropriate']+'</div>' + '\
 		<div class="festival">' + term + (date['festival'] == '' ? '' : '<p class="vfestival">' + date['festival'].replace(/\s/g, '</p><p  class="vfestival">') + '</p>') + '<p>' + date['poem'] + '</p></div>';
