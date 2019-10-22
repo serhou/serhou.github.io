@@ -228,6 +228,13 @@ var getData = (function () {
 				return (calendar.solarMonth[ms]);
 			}
 		},
+		//公历月、日判断所属星座
+		toAstro: function(cMonth,cDay) {
+			//魔羯水瓶双鱼白羊金牛双子巨蟹狮子处女天秤天蝎射手魔羯
+			var s   = "\u9b54\u7faf\u6c34\u74f6\u53cc\u9c7c\u767d\u7f8a\u91d1\u725b\u53cc\u5b50\u5de8\u87f9\u72ee\u5b50\u5904\u5973\u5929\u79e4\u5929\u874e\u5c04\u624b\u9b54\u7faf";
+			var arr = [20,19,21,21,21,22,23,23,23,23,22,22];
+			return s.substr(cMonth*2 - (cDay < arr[cMonth-1] ? 2 : 0),2);
+		},
 		//传入offset偏移量返回干支
 		toGanZhi: function (offset) {
 			return (calendar.Gan[offset % 10] + calendar.Zhi[offset % 12]);
@@ -417,6 +424,8 @@ var getData = (function () {
 			//日柱 当月一日与 1900/1/1 相差天数
 			var dayCyclical = Date.UTC(y, sm, 1, 0, 0, 0, 0) / 86400000 + 25567 + 10;
 			var gzD = calendar.toGanZhi(dayCyclical + d - 1);
+			//该日期所属的星座
+			var astro = calendar.toAstro(m,d);
 			return {
 				'lYear': year,
 				'lMonth': month,
@@ -428,6 +437,7 @@ var getData = (function () {
 				'cYear': y,
 				'cMonth': m,
 				'cDay': d,
+				'cAstro': astro,//星座
 				'gzYear': gzY,
 				'gzMonth': gzM,
 				'gzDay': gzD,
@@ -1350,7 +1360,7 @@ var format = function (date) {
 	}
 	$info.innerHTML = '<p><a class="triangle-left" href="javascript:void(0);" οnfοcus="this.blur();" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' -1);"><span class="glyphicon glyphicon-triangle-left"></span></a><strong id="changecal" class="changecal">' + date['cYear'] + '-' + (date['cMonth'] > 9 ? date['cMonth'] : '0' + date['cMonth']) + '-' + (date['cDay'] > 9 ? date['cDay'] : '0' + date['cDay']) + '</strong> <span class="glyphicon glyphicon-pencil"></span><strong>' + ' ' + date['ncWeek'] + '</strong><a class="triangle-right" href="javascript:void(0);" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' 1);"><span class="glyphicon glyphicon-triangle-right"></span></a></p>\
 		<div><span class="day">' + date['cDay'] + '</span>' + workorothers + '</div> \
-		<div class="sub"><p>公历' + date['cMonth'] +'月' + bigorsmall + ' 农历' + date['IMonthCn'] + (date['IMonthCnDays'] == 30 ? '(大)' : '(小)') + date['IDayCn'] + '</p>\
+		<div class="sub"><p>公历' + date['cMonth'] +'月' + bigorsmall + ' ♦ ' + date['cAstro'] + ' | 农历' + date['IMonthCn'] + (date['IMonthCnDays'] == 30 ? '大 ♦ ' : '小 ♦ ') + date['IDayCn'] + '</p>\
 		<p>' + date['gzYear'] + '年 【' + date['Animal'] + '年】\
 		' + date['gzMonth'] + '月 ' + date['gzDay'] + '日</p></div>' + '<div><span class="suitable">宜</span> '+almanac['suitable']+' <span class="inappropriate">忌</span> '+almanac['inappropriate']+'</div>' + '\
 		<div class="festival">' + term + (date['festival'] == '' ? '' : '<p class="vfestival">' + date['festival'].replace(/\s/g, '</p><p  class="vfestival">') + '</p>') + '<p>' + date['poem'] + '</p></div>';
