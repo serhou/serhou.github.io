@@ -84,6 +84,33 @@
 	display: inline-block;
 	border-radius: 50px;
 }
+.solar {
+	width: 36px;
+	height: 20px;
+	text-align: center;
+	font-size: 12px;
+	font-weight: bolder;
+	background-color: hsl(308, 88%, 49%);
+	margin-right: 1px;
+	margin-left: 1px;
+	color: #fff;
+	display: inline-block;
+	border-radius: 50px;
+}
+
+.lunar {
+	width: 36px;
+	height: 20px;
+	text-align: center;
+	font-size: 12px;
+	font-weight: bolder;
+	background-color: hsl(194, 78.6%, 43.9%);
+	margin-right: 1px;
+	margin-left: 1px;
+	color: #fff;
+	display: inline-block;
+	border-radius: 50px;
+}
 
 .triangle-left {
 	padding-right: 16px;
