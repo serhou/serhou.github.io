@@ -1347,10 +1347,24 @@ var format = function (date) {
 		</table>';
 	//$year.value = date['cYear'];
 	//$month.value = date['cMonth'];
+	//排列休班和今天
+	var workToday = '<ul class="worktoday">'
 	//上班还是休息
 	var workorothers = map[date['sign']] == undefined ? '' : map[date['sign']];
 	if(workorothers ){
 		workorothers = '<span class="workorothers">' + workorothers + '</span>' ;
+		workToday += '<li>' + workorothers + '</li>';
+	}
+	
+	if(date['isToday']){
+		var isToday = '<span class="today">今</span>' ;
+		workToday += '<li>' + isToday + '</li>';
+	}
+	workToday += '</ul>';
+	//调整日和休班今天的样式 包含任何一个 左移20px即今或休的宽度
+	var marginleft = '';
+	if(workorothers != '' || date['isToday']){
+		marginleft = ' style="margin-left: 20px;"';
 	}
 	//二十四节气
 	var isTerm  = date['isTerm'];
@@ -1359,7 +1373,7 @@ var format = function (date) {
 		term = '<p class="vfestival">' + date['Term'] + '</p>';
 	}
 	$info.innerHTML = '<p><a class="triangle-left" href="javascript:void(0);" οnfοcus="this.blur();" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' -1);"><span class="glyphicon glyphicon-triangle-left"></span></a><strong id="changecal" class="changecal">' + date['cYear'] + '-' + (date['cMonth'] > 9 ? date['cMonth'] : '0' + date['cMonth']) + '-' + (date['cDay'] > 9 ? date['cDay'] : '0' + date['cDay']) + '</strong> <span class="glyphicon glyphicon-pencil"></span><strong>' + ' ' + date['ncWeek'] + '</strong><a class="triangle-right" href="javascript:void(0);" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' 1);"><span class="glyphicon glyphicon-triangle-right"></span></a></p>\
-		<div><span class="day">' + date['cDay'] + '</span>' + workorothers + '</div> \
+		<div'+ marginleft +'><span class="day">' + date['cDay'] + '</span>' + workToday + '</div> \
 		<div class="sub"><p><span class="solar">公历</span> ' + (date['cMonth'] > 9 ? date['cMonth'] : '&nbsp;&nbsp;' + date['cMonth']) +'月' + bigorsmall + ' ♦ ' + date['cAstro'] + '</p><p><span class="lunar">农历</span> ' + date['IMonthCn'] + (date['IMonthCnDays'] == 30 ? '大 ♦ ' : '小 ♦ ') + date['IDayCn'] + '</p>\
 		<p>' + date['gzYear'] + '年 【' + date['Animal'] + '年】\
 		' + date['gzMonth'] + '月 ' + date['gzDay'] + '日</p></div>' + '<div><span class="suitable">宜</span> '+almanac['suitable']+' <span class="inappropriate">忌</span> '+almanac['inappropriate']+'</div>' + '\
