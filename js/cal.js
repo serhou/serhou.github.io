@@ -901,7 +901,8 @@ var getData = (function () {
 			'1006': 1,
 			'1007': 1,
 			'1012': 0
-		}
+		},
+		'2020':{'0101':1,'0119':0,'0124':1,'0125':1,'0126':1,'0127':1,'0128':1,'0129':1,'0130':1,'0201':0,'0404':1,'0405':1,'0406':1,'0426':0,'0501':1,'0502':1,'0503':1,'0504':1,'0505':1,'0509':0,'0625':1,'0626':1,'0627':1,'0628':0,'0927':0,'1001':1,'1002':1,'1003':1,'1004':1,'1005':1,'1006':1,'1007':1,'1008':1,'1010':0}
 	};
 	//获取日期数据
 	var getDateObj = function (year, month, day) {
@@ -1372,6 +1373,9 @@ var format = function (date) {
 	if(isTerm){
 		term = '<p class="vfestival">' + date['Term'] + '</p>';
 	}
+	//数九
+	var shujiuDate = new Date(date["cYear"], date["cMonth"] - 1, date["cDay"]);
+	term = term + (shujiu(shujiuDate) != '' ? '<p class="vfestival">' + shujiu(shujiuDate) + '</p>' : '');
 	$info.innerHTML = '<p><a class="triangle-left" href="javascript:void(0);" οnfοcus="this.blur();" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' -1);"><span class="glyphicon glyphicon-triangle-left"></span></a><strong id="changecal" class="changecal">' + date['cYear'] + '-' + (date['cMonth'] > 9 ? date['cMonth'] : '0' + date['cMonth']) + '-' + (date['cDay'] > 9 ? date['cDay'] : '0' + date['cDay']) + '</strong> <span class="glyphicon glyphicon-pencil"></span><strong>' + ' ' + date['ncWeek'] + '</strong><a class="triangle-right" href="javascript:void(0);" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' 1);"><span class="glyphicon glyphicon-triangle-right"></span></a></p>\
 		<div'+ marginleft +'><span class="day">' + date['cDay'] + '</span>' + workToday + '</div> \
 		<div class="sub"><p><span class="solar">公历</span> ' + (date['cMonth'] > 9 ? date['cMonth'] : '&nbsp;&nbsp;' + date['cMonth']) +'月' + bigorsmall + ' ♦ ' + date['cAstro'] + '</p><p><span class="lunar">农历</span> ' + date['IMonthCn'] + (date['IMonthCnDays'] == 30 ? '大 ♦ ' : '小 ♦ ') + date['IDayCn'] + '</p>\
@@ -1401,6 +1405,44 @@ format();
 			reloadlaydate();
 		}
 	});
+}
+
+
+function shujiu(b) {
+    var a = b.getFullYear()
+        , f = b.getMonth() + 1;
+    b = b.getDate();
+    var e = "";
+    if (12 == f || 1 == f || 2 == f || 3 == f) {
+        var a = a.toString()
+            , d = parseInt(a.substring(0, 2)) + 1
+            , c = "";
+        if (21 == d) {
+			c = 21.94;
+		}
+        else if (20 == d) {
+			c = 22.6;
+		}
+        else {
+			return;
+		}
+        y = a.substring(2);
+        d = "";
+        d = 12 == f ? parseInt(.2422 * y + c) - parseInt(y / 4) : parseInt(.2422 * (y - 1) + c) - parseInt((y - 1) / 4);
+        "1918" != a && "2021" != a || --d;
+        a = parseInt(a);
+        c = 28;
+        if (0 == a % 4 && 0 != a % 100 || 0 == a % 400) {
+			c = 29;
+		}
+        var c = ["12 " + d + " 12 " + (d + 8) + " 一九", "12 " + (d + 9) + " 1 " + (d + 17 - 31) + " 二九", "1 " + (d + 18 - 31) + " 1 " + (d + 26 - 31) + " 三九", "1 " + (d + 27 - 31) + " 1 " + (d + 35 - 31) + " 四九", "1 " + (d + 36 - 31) + " 2 " + (d + 44 - 62) + " 五九", "2 " + (d + 45 - 62) + " 2 " + (d + 53 - 62) + " 六九", "2 " + (d + 54 - 62) + " 2 " + (d + 62 - 62) + " 七九", "2 " + (d + 63 - 62) + " 3 " + (d + 71 - 62 - c) + " 八九", "3 " + (d + 72 - 62 - c) + " 3 " + (d + 80 - 62 - c) + " 九九"], d = "九八七六五四三二一".split(""), h;
+        for (h in c) {
+            c[h].match(/^(\d{1,2})\s+(\d{1,2})\s+(\d{1,2})\s+(\d{1,2})\s+(.*?)$/) && (f == Number(RegExp.$1) && f == Number(RegExp.$3) && b >= Number(RegExp.$2) && b <= Number(RegExp.$4) && (e = RegExp.$5 + "第" + d[parseInt(RegExp.$4) - b] + "天"),
+            RegExp.$1 != RegExp.$3 && f == RegExp.$1 && b >= RegExp.$2 && (e = RegExp.$5 + "第" + d[8 - (b - RegExp.$2)] + "天"),
+			RegExp.$1 != RegExp.$3 && f == RegExp.$3 && b <= RegExp.$4 && (e = RegExp.$5 + "第" + d[parseInt(RegExp.$4) - b] + "天"))
+		}
+    }
+    return e;
 }
 
 
