@@ -935,7 +935,8 @@ var getData = (function () {
 		var lDay = info.lDay > 9 ? '' + info.lDay : '0' + info.lDay;
 		var code1 = cMonth + cDay;
 		var code2 = cMonth + Math.ceil(info.cDay / 7) + info.nWeek % 7;
-		var code3 = lMonth + lDay;
+		//除夕日进行转换，12.30大月 12.29小月
+		var code3 = 12 == lMonth && lDay == info.IMonthCnDays && !info.isLeap  ? '0100' : lMonth + lDay;
 		var days = getMonthDays(obj);
 		//节日信息
 		info['festival'] = '';
