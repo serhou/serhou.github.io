@@ -1,4 +1,8 @@
-html {
+/* 全国哀悼日，全网灰显，致哀死难者 */
+
+
+
+* {
     filter: grayscale(100%);
     -webkit-filter: grayscale(100%);
     -moz-filter: grayscale(100%);
@@ -7,4 +11,8 @@ html {
     filter: url(desaturate.svg#grayscale);
     filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
     -webkit-filter: grayscale(1);
-}
+    filter: gray;
+}  
+ 
+
+ 
