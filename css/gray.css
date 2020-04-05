@@ -1,4 +1,5 @@
-html {
+/* 国家公祭日，网页灰显，致哀死难者 */
+/* html {
     filter: grayscale(100%);
     -webkit-filter: grayscale(100%);
     -moz-filter: grayscale(100%);
@@ -7,4 +8,4 @@ html {
     filter: url(desaturate.svg#grayscale);
     filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
     -webkit-filter: grayscale(1);
-}
+} */
