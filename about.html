@@ -188,7 +188,7 @@
     </div><!--/row-->
     <hr>
     <footer>
-        <p style="text-align: center">Copyright &copy; 2015-2020 最爱导航网</p>
+        <p id="copyright" style="text-align: center"></p>
     </footer>
 </div><!--/.container-->
 
@@ -216,6 +216,7 @@
 			$("#iconImg").attr("class", "sa sa-angle-right");
     	}
     }
+    document.getElementById("copyright").innerHTML = "Copyright &copy; 2015-" + new Date().getFullYear() + " 最爱导航网";
     //页面加载时先渲染一次
     window.onload = reloadlaydate();
 </script>
