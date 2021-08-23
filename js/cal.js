@@ -1419,6 +1419,7 @@ var format = function (date) {
 	var shujiuDate = new Date(date["cYear"], date["cMonth"] - 1, date["cDay"]);
 	term = term + (shujiu(shujiuDate) != '' ? '<p class="vfestival">' + shujiu(shujiuDate) + '</p>' : '');
 	$info.innerHTML = '<p><a class="triangle-left" href="javascript:void(0);" οnfοcus="this.blur();" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' -1);"><span class="glyphicon glyphicon-triangle-left"></span></a><strong id="changecal" class="changecal">' + date['cYear'] + '-' + (date['cMonth'] > 9 ? date['cMonth'] : '0' + date['cMonth']) + '-' + (date['cDay'] > 9 ? date['cDay'] : '0' + date['cDay']) + '</strong> <span class="glyphicon glyphicon-pencil"></span><strong>' + ' ' + date['ncWeek'] + '</strong><a class="triangle-right" href="javascript:void(0);" onclick="changeDay('+ date["cYear"] +',' + date["cMonth"] +',' + date["cDay"] +',' + ' 1);"><span class="glyphicon glyphicon-triangle-right"></span></a></p>\
+		<div id="he-plugin-simple"></div> \
 		<div'+ marginleft +'><span class="day">' + date['cDay'] + '</span>' + workToday + '</div> \
 		<div class="sub"><p><span class="solar">公历</span> ' + (date['isLeap'] == true ? '&nbsp;&nbsp;&nbsp;' : '') + (date['cMonth'] > 9 ? date['cMonth'] : '&nbsp;&nbsp;' + date['cMonth']) +'月' + bigorsmall + ' ♦ ' + date['cAstro'] + '</p><p><span class="lunar">农历</span> ' + date['IMonthCn'] + (date['IMonthCnDays'] == 30 ? '大 ♦ ' : '小 ♦ ') + date['IDayCn'] + '</p>\
 		<p>' + date['gzYear'] + '年 【' + date['Animal'] + '年】\
