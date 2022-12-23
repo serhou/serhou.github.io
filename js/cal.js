@@ -541,7 +541,7 @@ var getData = (function () {
 		'1213': '南京大屠杀纪念日',
 		'1220': '澳门回归纪念',
 		'1221': '国际篮球日',
-		'1223': '天津城' + (new Date().getFullYear() -1404) + '岁生日',
+		'1223': '天津',
 		'1224': '平安夜',
 		'1225': '圣诞节',
 		'1226': '毛泽东诞辰纪念日'
@@ -1062,7 +1062,7 @@ var getData = (function () {
 			info['festival'] += _festival3[code3];
 		}
 		if (_festival1[code1]) {
-			info['festival'] += ' ' + _festival1[code1];
+			info['festival'] += ' ' + (code1 == '1223' ?  _festival1[code1] + (obj.year -1404) + '岁生日' : _festival1[code1]);
 		}
 		if (_festival2[code2]) {
 			info['festival'] += ' ' + _festival2[code2];
