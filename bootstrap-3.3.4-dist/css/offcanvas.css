@@ -44,7 +44,7 @@ footer {
   }
 
   .row-offcanvas-right.active {
-    right: 80%; /* 6 columns */
+    right: 95%; /* 6 columns */
   }
 
   .row-offcanvas-left.active {
