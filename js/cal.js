@@ -1120,7 +1120,7 @@ var getData = (function () {
 		info['almanac'] = getAlmanac(obj);
 		//名人名言
 		if (true) {
-			info['poem'] = '今日诗：' + getPoem(obj);
+			info['poem'] = getPoem(obj);
 		}
 		info['festival'] = info['festival'].trim();
 		//放假、调休等标记
