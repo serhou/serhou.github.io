@@ -5595,9 +5595,9 @@ a.list-group-item-danger.active:focus {
 .panel-success > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #d6e9c6;
 }
-.panel-info {
+/* .panel-info {
   border-color: #bce8f1;
-}
+} */
 .panel-info > .panel-heading {
   color: #31708f;
   background-color: #d9edf7;
