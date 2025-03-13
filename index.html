@@ -30,6 +30,11 @@
                 document.getElementById("searchForm").action = "https://www.baidu.com/s";
                 document.getElementById("searchImage").src = "images/bd_logo1.png";
                 document.getElementById("ss").name = "word";
+            } else if (searchEngine.value == "bdai") {
+				document.getElementById("imgHrefId").href = "https://www.baidu.com/";
+                document.getElementById("searchForm").action = "https://chat.baidu.com/";
+                document.getElementById("searchImage").src = "images/bd_logo1.png";
+                document.getElementById("ss").name = "word";
             } else if (searchEngine.value == "microsoftWeb") {
 				document.getElementById("imgHrefId").href = "https://cn.bing.com/";
                 document.getElementById("searchForm").action = "https://cn.bing.com/search";
@@ -129,6 +134,8 @@
                             
                             <input type="radio" name="searchEngine" id="microsoftWeb" value="microsoftWeb" checked="checked"
 								   onclick="changeEngine(this);"/><font style="font-size:12px;">必应</font>
+                            <input type="radio" name="searchEngine" id="bdai" value="bdai" 
+                                   onclick="changeEngine(this);"/><font style="font-size:12px;">Ai</font>
 							<input type="radio" name="searchEngine" id="sougouWeb" value="sougouWeb" 
 								   onclick="changeEngine(this);"/><font style="font-size:12px;">搜狗</font>
 							<input type="radio" name="searchEngine" id="baiduWeb" value="baiduWeb" 
