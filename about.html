@@ -1,224 +1,1029 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>最爱导航网</title>
-    <link rel="shortcut icon" href="best.ico" type="image/x-icon" />
-    <link type="text/css" rel="stylesheet" href="css/gray.css"/>
-    <!-- Bootstrap core CSS -->
-    <link href="bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="bootstrap-3.3.4-dist/css/offcanvas.css" rel="stylesheet">
-    <link href="bootstrap-3.3.4-dist/css/carousel.css" rel="stylesheet">
-    <link rel="stylesheet" href="bootstrap-3.3.4-dist/css/site.min.css?v5">
-    <link type="text/css" rel="stylesheet" href="css/cal.css"/>
+    <meta name="description" content="集成多搜索引擎、网站导航、万年历、天气查询的智能导航网站">
+    <meta name="keywords" content="导航,搜索引擎,万年历,天气,网站导航">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.loli.net/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Lunar JavaScript Library -->
+    <script src="https://cdn.jsdelivr.net/npm/lunar-javascript@1.6.12/lunar.min.js"></script>
+
     <style>
-        table tr td a {
-            color: #6F5499;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-		.text-white {
-            color: #fff;
+        
+        html {
+            lang: zh-CN;
         }
-        .octicon {
-            display: inline-block;
-            fill: currentColor;
-            vertical-align: text-top;
+        
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
         }
-        .weather {
-            border-top: 1px dotted #fefefe;
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        .hover-scale {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-scale:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-engine-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .search-engine-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .nav-item {
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .calendar-day {
+            transition: all 0.2s ease;
+        }
+        
+        .calendar-day:hover {
+            background: rgba(102, 126, 234, 0.1);
+            cursor: pointer;
+        }
+        
+        .calendar-day.today {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .weather-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .loading-spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        
+        @media (max-width: 768px) {
+            .desktop-only {
+                display: none !important;
+            }
+            
+            .mobile-full {
+                width: 100% !important;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none !important;
+            }
         }
     </style>
-
 </head>
 <body>
-
-
-
-<nav class="navbar navbar-fixed-top navbar-inverse">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="index.html">最爱导航网</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="https://github.com/serhou/serhou.github.io" target="_blank"><svg height="20" class="octicon octicon-mark-github text-white" viewBox="0 0 16 16" version="1.1" width="20" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg></a></li>
-                <li><a href="about.html">关于</a></li>
-            </ul>
+    <!-- 移动端菜单按钮 -->
+    <button class="mobile-only fixed top-4 left-4 z-50 glass-morphism text-white p-3 rounded-lg" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars text-xl"></i>
+    </button>
+    
+    <!-- 移动端侧边栏 -->
+    <div id="mobileMenu" class="mobile-menu fixed left-0 top-0 h-full w-64 glass-morphism z-40 p-4 mobile-only">
+        <button onclick="toggleMobileMenu()" class="absolute top-4 right-4 text-white">
+            <i class="fas fa-times text-xl"></i>
+        </button>
+        <div class="mt-12">
+            <h3 class="text-white font-semibold mb-4">快速导航</h3>
+            <div class="space-y-2">
+                <button onclick="scrollToSection('search')" class="w-full text-left text-white p-2 rounded hover:bg-white hover:bg-opacity-20">
+                    <i class="fas fa-search mr-2"></i>搜索
+                </button>
+                <button onclick="scrollToSection('navigation')" class="w-full text-left text-white p-2 rounded hover:bg-white hover:bg-opacity-20">
+                    <i class="fas fa-compass mr-2"></i>导航
+                </button>
+                <button onclick="scrollToSection('calendar')" class="w-full text-left text-white p-2 rounded hover:bg-white hover:bg-opacity-20">
+                    <i class="fas fa-calendar mr-2"></i>万年历
+                </button>
+                <button onclick="scrollToSection('weather')" class="w-full text-left text-white p-2 rounded hover:bg-white hover:bg-opacity-20">
+                    <i class="fas fa-cloud mr-2"></i>天气
+                </button>
+            </div>
         </div>
     </div>
-</nav>
+    
+    <div class="container mx-auto px-4 py-8 max-w-7xl relative">
+        <!-- 头部：日历和天气 -->
+        <header class="mb-4 fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <!-- 万年历 -->
+                <div class="glass-morphism rounded-xl p-2 relative h-20 overflow-hidden" id="calendarContainer">
+                    <div class="flex justify-between items-center h-full">
+                        <button onclick="previousDay()" class="text-white hover:text-gray-300 text-xs">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="text-center flex-1">
+                            <p class="text-white text-xs mb-0.5 flex items-center justify-center gap-1">
+                                <button onclick="toggleDatePicker()" class="text-white hover:text-gray-300 text-xs" title="选择日期">
+                                    <i class="fas fa-calendar-alt text-xs"></i>
+                                </button>
+                                <span id="currentDate" class="font-semibold"></span>
+                                <span id="weekDay" class="ml-1 font-semibold"></span>
+                                <span id="holidayWorkType" class="ml-1 font-semibold"></span>
+                            </p>
+                            <p class="text-white text-xs mb-0.5">
+                                <span id="lunarDate" class="font-semibold"></span>
+                                <span id="solarTerm" class="ml-1 font-semibold"></span>
+                            </p>
+                            <p id="holidayType" class="text-xs text-yellow-400 font-semibold h-4"></p>
+                        </div>
+                        <button onclick="nextDay()" class="text-white hover:text-gray-300 text-xs">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 天气 -->
+                <div class="glass-morphism rounded-xl p-2 h-20">
+                    <div class="flex items-center h-full gap-3">
+                        <!-- 左侧：当前天气 -->
+                        <div class="flex items-center flex-shrink-0">
+                            <i id="weatherIcon" class="fas fa-sun text-lg mr-2 text-white"></i>
+                            <h3 id="cityName" class="text-xs font-semibold text-white mr-2">北京</h3>
+                            <p id="temperature" class="text-sm font-bold text-white mr-2">25°C</p>
+                            <span id="weatherDesc" class="text-xs text-white opacity-80 mr-2">晴天</span>
+                            <span class="text-xs text-white opacity-80"><i class="fas fa-tint mr-1"></i><span id="humidity">45%</span></span>
+                        </div>
+                        
+                        <!-- 右侧：3天天气预报 -->
+                        <div id="forecastContainer" class="hidden grid grid-cols-3 gap-3 text-center text-white flex-1">
+                            <div class="flex flex-col items-center">
+                                <p id="forecastDay1" class="text-[10px] font-semibold mb-0.5">今天</p>
+                                <i id="forecastIcon1" class="fas fa-sun text-base mb-0.5"></i>
+                                <p id="forecastTemp1" class="text-xs font-bold">25°</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <p id="forecastDay2" class="text-[10px] font-semibold mb-0.5">明天</p>
+                                <i id="forecastIcon2" class="fas fa-sun text-base mb-0.5"></i>
+                                <p id="forecastTemp2" class="text-xs font-bold">26°</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <p id="forecastDay3" class="text-[10px] font-semibold mb-0.5">后天</p>
+                                <i id="forecastIcon3" class="fas fa-sun text-base mb-0.5"></i>
+                                <p id="forecastTemp3" class="text-xs font-bold">24°</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-<div class="container">
-
-
-    <div class="row row-offcanvas row-offcanvas-right">
-
-
-        <div class="col-xs-12 col-sm-9">
-            <div class="jumbotron">
-                <h3 align="center">最爱导航网简介</h3>
-                <p>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最爱导航网是目前国内唯一没有任何广告的导航网站，是你最值得信赖的伙伴！<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网站源码已在GitHub开源，欢迎访问<a href="https://github.com/serhou/serhou.github.io" target="_blank">&nbsp;<i class="glyphicon glyphicon-cloud-download"></i></a><br>
-                </p>
+        <!-- 日期选择器弹窗 (移到header外层) -->
+        <div id="datePickerModal" class="hidden absolute glass-morphism rounded-xl p-4 z-[100]">
+            <div class="flex items-center gap-2">
+                <input 
+                    type="date" 
+                    id="datePickerInput"
+                    class="flex-1 px-3 py-2 rounded-lg bg-white bg-opacity-20 text-white text-xs focus:outline-none focus:ring-1 focus:ring-white focus:ring-opacity-50"
+                    lang="zh-CN"
+                >
+                <button onclick="jumpToDate()" class="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg text-xs hover:scale-105 transition-transform">
+                    跳转
+                </button>
+                <button onclick="toggleDatePicker()" class="px-3 py-2 bg-white bg-opacity-20 text-white rounded-lg text-xs hover:bg-opacity-30">
+                    取消
+                </button>
             </div>
         </div>
 
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
-            <div class="panel panel-info" style="width: 265px;">
-                <div class="mod-calendar">
-                    <div class="info"></div>
+        <!-- 搜索区域 -->
+        <section id="search" class="mb-8 fade-in">
+            <div class="glass-morphism rounded-2xl p-6 md:p-8">
+                
+                <!-- 搜索引擎选择 -->
+                <div class="flex flex-wrap justify-center gap-3 mb-6">
+                    <button onclick="selectSearchEngine('bing')" class="search-engine-btn active px-4 py-2 rounded-full glass-morphism text-white" data-engine="bing">
+                        <i class="fab fa-microsoft mr-2"></i>必应
+                    </button>
+                    <button onclick="selectSearchEngine('baidu')" class="search-engine-btn px-4 py-2 rounded-full glass-morphism text-white" data-engine="baidu">
+                        <i class="fas fa-paw mr-2"></i>百度
+                    </button>
+                    <button onclick="selectSearchEngine('sogou')" class="search-engine-btn px-4 py-2 rounded-full glass-morphism text-white" data-engine="sogou">
+                        <i class="fas fa-dog mr-2"></i>搜狗
+                    </button>
+                    <button onclick="selectSearchEngine('360')" class="search-engine-btn px-4 py-2 rounded-full glass-morphism text-white" data-engine="360">
+                        <i class="fas fa-shield-alt mr-2"></i>360
+                    </button>
+                </div>
+                
+                <!-- 搜索框 -->
+                <div class="relative max-w-2xl mx-auto">
+                    <input 
+                        type="text" 
+                        id="searchInput"
+                        placeholder="输入搜索内容..." 
+                        class="w-full px-6 py-4 pr-12 rounded-full glass-morphism text-white placeholder-gray-300 text-lg focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50"
+                        onkeypress="handleSearchKeyPress(event)"
+                    >
+                    <button 
+                        onclick="performSearch()"
+                        class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white p-3 rounded-full hover:scale-110 transition-transform"
+                    >
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
             </div>
-
-            <div class="panel panel-info" style="width: 265px;">
-                <div class="mod-calendar2">        
-                    <div id="he-plugin-simple">
-                        <div id="ww_545661daf6e58" style="border-radius: 5px;" v='1.3' loc='id' a='{"t":"horizontal","lang":"zh","sl_lpl":1,"ids":[],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'><a href="https://weatherwidget.org/" id="ww_545661daf6e58_u" target="_blank">Weather widget</a></div><script async src="https://app2.weatherwidget.org/js/?id=ww_545661daf6e58"></script>
+        </section>
+        
+        <!-- 网站导航 -->
+        <section id="navigation" class="mb-12 fade-in">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- 社交媒体 -->
+                <div class="glass-morphism rounded-xl p-6 hover-scale">
+                    <h3 class="text-xl font-semibold text-white mb-4">
+                        <i class="fas fa-users mr-2"></i>社交媒体
+                    </h3>
+                    <div class="space-y-3">
+                        <a href="https://weibo.com" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fab fa-weibo mr-3 text-red-400"></i>
+                            <span>微博</span>
+                        </a>
+                        <a href="https://www.zhihu.com" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fas fa-question-circle mr-3 text-blue-400"></i>
+                            <span>知乎</span>
+                        </a>
+                        <a href="https://www.douyin.com" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fas fa-music mr-3 text-black"></i>
+                            <span>抖音</span>
+                        </a>
+                        <a href="https://www.xiaohongshu.com" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fas fa-book mr-3 text-pink-400"></i>
+                            <span>小红书</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 视频娱乐 -->
+                <div class="glass-morphism rounded-xl p-6 hover-scale">
+                    <h3 class="text-xl font-semibold text-white mb-4">
+                        <i class="fas fa-video mr-2"></i>视频娱乐
+                    </h3>
+                    <div class="space-y-3">
+                        <a href="https://www.bilibili.com" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fas fa-play-circle mr-3 text-pink-500"></i>
+                            <span>哔哩哔哩</span>
+                        </a>
+                        <a href="https://v.qq.com" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fas fa-tv mr-3 text-green-400"></i>
+                            <span>腾讯视频</span>
+                        </a>
+                        <a href="https://www.iqiyi.com" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fas fa-film mr-3 text-green-600"></i>
+                            <span>爱奇艺</span>
+                        </a>
+                        <a href="https://www.youku.com" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fas fa-video mr-3 text-blue-500"></i>
+                            <span>优酷</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 购物网站 -->
+                <div class="glass-morphism rounded-xl p-6 hover-scale">
+                    <h3 class="text-xl font-semibold text-white mb-4">
+                        <i class="fas fa-shopping-cart mr-2"></i>购物网站
+                    </h3>
+                    <div class="space-y-3">
+                        <a href="https://www.taobao.com" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fas fa-shopping-bag mr-3 text-orange-400"></i>
+                            <span>淘宝</span>
+                        </a>
+                        <a href="https://www.jd.com" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fas fa-store mr-3 text-red-500"></i>
+                            <span>京东</span>
+                        </a>
+                        <a href="https://www.tmall.com" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fas fa-cat mr-3 text-red-400"></i>
+                            <span>天猫</span>
+                        </a>
+                        <a href="https://www.pinduoduo.com" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fas fa-gift mr-3 text-red-600"></i>
+                            <span>拼多多</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 工作学习 -->
+                <div class="glass-morphism rounded-xl p-6 hover-scale">
+                    <h3 class="text-xl font-semibold text-white mb-4">
+                        <i class="fas fa-graduation-cap mr-2"></i>工作学习
+                    </h3>
+                    <div class="space-y-3">
+                        <a href="https://github.com" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fab fa-github mr-3"></i>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://www.csdn.net" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fas fa-code mr-3 text-red-500"></i>
+                            <span>CSDN</span>
+                        </a>
+                        <a href="https://juejin.cn" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fas fa-laptop-code mr-3 text-blue-400"></i>
+                            <span>掘金</span>
+                        </a>
+                        <a href="https://www.w3school.com.cn" target="_blank" class="nav-item flex items-center p-3 bg-white bg-opacity-10 rounded-lg text-white hover:bg-opacity-20">
+                            <i class="fas fa-book-open mr-3 text-green-500"></i>
+                            <span>W3School</span>
+                        </a>
                     </div>
                 </div>
             </div>
-            <!-- Carousel
-   ================================================== -->
-            <div id="myCarousel" class="carousel slide" data-ride="carousel" style="width: 265px;">
-                <!-- Indicators -->
-                <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
-					<li data-target="#myCarousel" data-slide-to="3"></li>
-					<li data-target="#myCarousel" data-slide-to="4"></li>
-                </ol>
-                <div class="carousel-inner" role="listbox">
-                    <div class="item active">
-                        <img class="first-slide" src="images/summer1.jpg" alt="First slide">
-                        <div class="container">
-						 <div class="carousel-caption">
-                                 <h3>最爱中国</h3>
-                         </div>
-                            <!-- <div class="carousel-caption">
-                                 <h3>美丽中国</h3>
-                                 <p>美丽中国欢迎你</p>
-                                 <p><a class="btn btn-lg btn-primary" href="#" role="button">快来吧</a></p>
-                             </div>-->
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img class="second-slide" src="images/summer2.jpg" alt="Second slide">
-                        <div class="container">
-						 <div class="carousel-caption">
-                                 <h3>最爱中国</h3>
-                         </div>
-                            <!--<div class="carousel-caption">
-                                <h3>最爱导航网</h3>
-                                <p>最爱导航欢迎你</p>
-                                <p><a class="btn btn-lg btn-primary" href="#" role="button">点我吧</a></p>
-                            </div>-->
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img class="third-slide" src="images/summer3.jpg" alt="Third slide">
-                        <div class="container">
-						 <div class="carousel-caption">
-                                 <h3>最爱中国</h3>
-                         </div>
-                            <!--<div class="carousel-caption">
-                                <h3>招聘启事</h3>
-                                <p>快快加入最爱吧</p>
-                                <p><a class="btn btn-lg btn-primary" href="#" role="button">点我加入</a></p>
-                            </div>-->
-                        </div>
-                    </div>
-					<div class="item">
-                        <img class="third-slide" src="images/summer4.jpg" alt="Forth slide">
-                        <div class="container">
-						 <div class="carousel-caption">
-                                 <h3>最爱中国</h3>
-                         </div>
-                            <!--<div class="carousel-caption">
-                                <h3>招聘启事</h3>
-                                <p>快快加入最爱吧</p>
-                                <p><a class="btn btn-lg btn-primary" href="#" role="button">点我加入</a></p>
-                            </div>-->
-                        </div>
-                    </div>
-					<div class="item">
-                        <img class="third-slide" src="images/summer5.jpg" alt="Fifth slide">
-                        <div class="container">
-						 <div class="carousel-caption">
-                                 <h3>最爱中国</h3>
-                         </div>
-                            <!--<div class="carousel-caption">
-                                <h3>招聘启事</h3>
-                                <p>快快加入最爱吧</p>
-                                <p><a class="btn btn-lg btn-primary" href="#" role="button">点我加入</a></p>
-                            </div>-->
-                        </div>
-                    </div>
-                </div>
-                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div><!-- /.carousel -->
-        </div><!--/.sidebar-offcanvas-->
-    </div><!--/row-->
-    <hr>
-    <footer>
-        <p id="copyright" style="text-align: center"></p>
-    </footer>
-</div><!--/.container-->
-
-
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="js/jquery-2.1.4.js"></script>
-<script src="bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
-<script src="bootstrap-3.3.4-dist/js/offcanvas.js"></script>
-<!--<script src="http://cdn.bootcss.com/scrollup/2.4.0/jquery.scrollUp.min.js"></script>-->
-<script src="js/poems.js"></script>
-<script src="js/cal.js"></script>
-<script src="laydate/laydate.js"></script>
-<script type="text/javascript">
-    $(window).scroll(
-            function () {
-                $(this).scrollTop() > 300 ? $(".gotop-btn").css("display", "block") : $(".gotop-btn").hide()
+        </section>
+        
+        
+        
+        <!-- 页脚 -->
+        <footer class="mt-16 text-center text-white opacity-80">
+            <p>&copy; 2025 最爱导航网. All rights reserved.</p>
+            <p class="mt-2 text-sm">使用现代前端技术构建 | Tailwind CSS + JavaScript</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 全局变量
+        let currentSearchEngine = 'bing';
+        let currentDate = new Date();
+        
+        // 搜索引擎URL配置
+        const searchEngines = {
+            bing: 'https://www.bing.com/search?q=',
+            baidu: 'https://www.baidu.com/s?wd=',
+            sogou: 'https://www.sogou.com/web?query=',
+            '360': 'https://www.so.com/s?q='
+        };
+        
+        // 初始化
+                document.addEventListener('DOMContentLoaded', function() {
+                    initCalendar();
+                    getLocationByIP(); // 根据IP自动定位并显示天气
+                    
+                });        
+        // 搜索引擎选择
+        function selectSearchEngine(engine) {
+            currentSearchEngine = engine;
+            document.querySelectorAll('.search-engine-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-engine="${engine}"]`).classList.add('active');
+        }
+        
+        // 执行搜索
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const query = searchInput.value.trim();
+            if (query) {
+                const searchUrl = searchEngines[currentSearchEngine] + encodeURIComponent(query);
+                window.open(searchUrl, '_blank');
             }
-    )
-	function changeClass() {
-    	if ("sa sa-angle-right" === $("#iconImg").attr("class")) {
-    		$("#iconImg").attr("class", "sa sa-angle-left");
-    	} else {
-			$("#iconImg").attr("class", "sa sa-angle-right");
-    	}
-    }
-    document.getElementById("copyright").innerHTML = "Copyright &copy; 2015-" + new Date().getFullYear() + " 最爱导航网";
-    //页面加载时先渲染一次
-    window.onload = reloadlaydate();
-</script>
-<p class="pull-right visible-xs">
-     <a style="position: fixed; display: block;" href="#" data-toggle="offcanvas" id="scrollBroadSide" onclick="changeClass()"><i
-            class="sa sa-angle-left" id="iconImg"></i></a>
-</p>
-<a style="position: fixed; display: none;" class="gotop-btn" href="#top" id="scrollUp"><i
-        class="fa fa-angle-up"></i></a>
+        }
+        
+        // 快速搜索
+        function quickSearch(query) {
+            document.getElementById('searchInput').value = query;
+            performSearch();
+        }
+        
+        // 回车搜索
+        function handleSearchKeyPress(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        }
+        
+        // 移动端菜单切换
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+        }
+        
+        // 滚动到指定区域
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+                toggleMobileMenu(); // 关闭移动端菜单
+            }
+        }
+        
+        // 万年历功能
+        function initCalendar() {
+            updateDateDisplay();
+        }
+        
+        function previousDay() {
+            currentDate.setDate(currentDate.getDate() - 1);
+            updateDateDisplay();
+        }
+        
+        function nextDay() {
+            currentDate.setDate(currentDate.getDate() + 1);
+            updateDateDisplay();
+        }
+
+        function jumpToDate() {
+            const dateInput = document.getElementById('datePickerInput');
+            if (dateInput.value) {
+                const selectedDate = new Date(dateInput.value);
+                currentDate = selectedDate;
+                updateDateDisplay();
+                toggleDatePicker();
+            }
+        }
+
+        function toggleDatePicker() {
+            const modal = document.getElementById('datePickerModal');
+            const calendarContainer = document.getElementById('calendarContainer');
+            const isHidden = modal.classList.contains('hidden');
+            
+            if (isHidden) {
+                // 计算万年历容器的位置
+                const rect = calendarContainer.getBoundingClientRect();
+                const containerRect = document.querySelector('.container').getBoundingClientRect();
+                
+                // 设置弹窗位置
+                modal.style.top = (rect.bottom - containerRect.top + 8) + 'px';
+                modal.style.left = rect.left - containerRect.left + 'px';
+                modal.style.width = rect.width + 'px';
+            }
+            
+            modal.classList.toggle('hidden');
+        }
+
+        function updateDateDisplay() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth() + 1;
+            const day = currentDate.getDate();
+
+            // 星期几
+            const weekDays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            const weekDay = weekDays[currentDate.getDay()];
+
+            // 更新日期显示
+            document.getElementById('currentDate').textContent = `${year}年${month}月${day}日`;
+            document.getElementById('weekDay').textContent = weekDay;
+
+            // 使用 lunar-javascript 库获取准确的农历和节气信息
+            try {
+                // 创建阳历对象
+                const solar = Solar.fromYmd(year, month, day);
+                // 转换为农历
+                const lunar = solar.getLunar();
+
+                // 农历日期 - 使用干支纪年
+                const lunarMonth = lunar.getMonthInChinese();
+                const lunarDay = lunar.getDayInChinese();
+                const lunarYear = lunar.getYearInGanZhi();
+                document.getElementById('lunarDate').textContent = `农历${lunarYear}年${lunarMonth}月${lunarDay}`;
+
+                // 判断节假日和调休
+                const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+                // 2025年国务院调休安排
+                const holidays = {
+                    // 2025年元旦
+                    '2025-01-01': '休',
+                    '2025-01-02': '休',
+                    '2025-01-03': '休',
+                    '2025-01-04': '班',
+                    // 2025年春节
+                    '2025-01-28': '休',
+                    '2025-01-29': '休',
+                    '2025-01-30': '休',
+                    '2025-01-31': '休',
+                    '2025-02-01': '休',
+                    '2025-02-02': '休',
+                    '2025-02-03': '休',
+                    '2025-02-04': '班',
+                    // 2025年清明节
+                    '2025-04-04': '休',
+                    '2025-04-05': '休',
+                    '2025-04-06': '休',
+                    '2025-04-07': '班',
+                    // 2025年劳动节
+                    '2025-05-01': '休',
+                    '2025-05-02': '休',
+                    '2025-05-03': '休',
+                    '2025-05-04': '班',
+                    '2025-05-05': '班',
+                    // 2025年端午节
+                    '2025-05-31': '休',
+                    '2025-06-01': '休',
+                    '2025-06-02': '休',
+                    '2025-06-03': '班',
+                    // 2025年中秋节
+                    '2025-10-06': '休',
+                    '2025-10-07': '休',
+                    '2025-10-08': '休',
+                    '2025-10-11': '班',
+                    // 2025年国庆节
+                    '2025-10-01': '休',
+                    '2025-10-02': '休',
+                    '2025-10-03': '休',
+                    '2025-10-04': '休',
+                    '2025-10-05': '休',
+                    '2025-10-06': '休',
+                    '2025-10-07': '休',
+                    '2025-10-08': '休',
+                    '2025-10-11': '班',
+                    // 2026年元旦
+                    '2026-01-01': '休',
+                    '2026-01-02': '休',
+                    '2026-01-03': '休',
+                    '2026-01-04': '班',
+                    // 2026年春节
+                    '2026-02-16': '休',
+                    '2026-02-17': '休',
+                    '2026-02-18': '休',
+                    '2026-02-19': '休',
+                    '2026-02-20': '休',
+                    '2026-02-21': '休',
+                    '2026-02-22': '休',
+                    '2026-02-23': '班',
+                    // 2026年清明节
+                    '2026-04-04': '休',
+                    '2026-04-05': '休',
+                    '2026-04-06': '休',
+                    '2026-04-07': '班',
+                    // 2026年劳动节
+                    '2026-05-01': '休',
+                    '2026-05-02': '休',
+                    '2026-05-03': '休',
+                    '2026-05-04': '班',
+                    '2026-05-05': '班',
+                    // 2026年端午节
+                    '2026-06-20': '休',
+                    '2026-06-21': '休',
+                    '2026-06-22': '休',
+                    '2026-06-23': '班',
+                    // 2026年中秋节
+                    '2026-09-25': '休',
+                    '2026-09-26': '休',
+                    '2026-09-27': '休',
+                    '2026-09-28': '班',
+                    // 2026年国庆节
+                    '2026-10-01': '休',
+                    '2026-10-02': '休',
+                    '2026-10-03': '休',
+                    '2026-10-04': '休',
+                    '2026-10-05': '休',
+                    '2026-10-06': '休',
+                    '2026-10-07': '休',
+                    '2026-10-08': '休',
+                    '2026-10-09': '班',
+                    '2026-10-10': '班'
+                };
+
+                // 计算三九天
+                function getSanJiu(y, m, d) {
+                    const currentDate = Solar.fromYmd(y, m, d);
+                    
+                    // 查找当年的冬至 - 从12月21日开始往后找
+                    let dongZhi = Solar.fromYmd(y, 12, 21);
+                    let lunar = dongZhi.getLunar();
+                    const jieQiTable = lunar.getJieQiTable();
+                    
+                    // 从节气表中获取当年的冬至（需要找到年份匹配的）
+                    let foundDongZhi = null;
+                    for (let i = 0; i < 10; i++) {
+                        const testDate = Solar.fromYmd(y, 12, 21 + i);
+                        const testLunar = testDate.getLunar();
+                        if (testLunar.getJieQi() === '冬至') {
+                            foundDongZhi = testDate;
+                            break;
+                        }
+                    }
+
+                    if (foundDongZhi) {
+                        dongZhi = foundDongZhi;
+                    }
+
+                    // 如果当前日期在冬至之前，查找前一年的冬至
+                    if (currentDate.isBefore(dongZhi)) {
+                        for (let i = 0; i < 10; i++) {
+                            const testDate = Solar.fromYmd(y - 1, 12, 21 + i);
+                            const testLunar = testDate.getLunar();
+                            if (testLunar.getJieQi() === '冬至') {
+                                dongZhi = testDate;
+                                break;
+                            }
+                        }
+                    }
+
+                    // 计算从冬至开始的天数
+                    const daysDiff = currentDate.subtract(dongZhi);
+
+                    // 计算是第几个九，以及第几天
+                    const jiuIndex = Math.floor(daysDiff / 9) + 1;
+                    const dayInJiu = (daysDiff % 9) + 1;
+
+                    if (daysDiff >= 0 && daysDiff < 81) {
+                        const jiuNames = ['一九', '二九', '三九', '四九', '五九', '六九', '七九', '八九', '九九'];
+                        return `${jiuNames[jiuIndex - 1]}第${dayInJiu}天`;
+                    }
+                    return '';
+                }
+
+                // 获取三九和三伏天
+                const jieQi = lunar.getJieQi();
+                const fu = lunar.getFu();
+                const sanJiu = getSanJiu(year, month, day);
+
+                // 获取节假日
+                const solarFestivals = solar.getFestivals();
+                const lunarFestivals = lunar.getFestivals();
+                const allFestivals = [...solarFestivals, ...lunarFestivals];
+
+                // 显示节气
+                if (jieQi) {
+                    document.getElementById('solarTerm').textContent = jieQi;
+                } else {
+                    document.getElementById('solarTerm').textContent = '';
+                }
+
+                // 显示休/班、三九、三伏天、节假日
+                let holidayInfo = '';
+                const holidayType = holidays[dateStr];
+                if (allFestivals.length > 0) {
+                    holidayInfo = allFestivals.join(' ');
+                }
+                if (sanJiu) {
+                    holidayInfo = holidayInfo ? holidayInfo + ' ' + sanJiu : sanJiu;
+                }
+                if (fu) {
+                    holidayInfo = holidayInfo ? holidayInfo + ' ' + fu.toFullString() : fu.toFullString();
+                }
+                document.getElementById('holidayType').textContent = holidayInfo;
+
+                // 显示休/班（单独在星期后边）
+                if (holidayType) {
+                    const holidayWorkTypeElement = document.getElementById('holidayWorkType');
+                    holidayWorkTypeElement.textContent = holidayType;
+                    
+                    // 根据类型设置颜色
+                    if (holidayType === '休') {
+                        holidayWorkTypeElement.className = 'ml-1 font-semibold text-green-400';
+                    } else if (holidayType === '班') {
+                        holidayWorkTypeElement.className = 'ml-1 font-semibold text-red-400';
+                    } else {
+                        holidayWorkTypeElement.className = 'ml-1 font-semibold';
+                    }
+                } else {
+                    document.getElementById('holidayWorkType').textContent = '';
+                }
+            } catch (error) {
+                console.error('农历计算错误:', error);
+                document.getElementById('lunarDate').textContent = '农历计算失败';
+                document.getElementById('solarTerm').textContent = '';
+                document.getElementById('holidayType').textContent = '';
+                document.getElementById('holidayWorkType').textContent = '';
+            }
+        }
+        
+        // 天气功能
+        // 使用 Open-Meteo 免费天气API（无需注册，完全免费）
+        // Open-Meteo API: https://open-meteo.com/
+        
+        // 城市坐标映射（Open-Meteo 需要经纬度）
+        const cityCoordinates = {
+            '北京': { lat: 39.9042, lon: 116.4074 },
+            '上海': { lat: 31.2304, lon: 121.4737 },
+            '广州': { lat: 23.1291, lon: 113.2644 },
+            '深圳': { lat: 22.5431, lon: 114.0579 },
+            '杭州': { lat: 30.2741, lon: 120.1551 },
+            '南京': { lat: 32.0603, lon: 118.7969 },
+            '成都': { lat: 30.5728, lon: 104.0668 },
+            '重庆': { lat: 29.4316, lon: 106.9123 },
+            '武汉': { lat: 30.5928, lon: 114.3055 },
+            '西安': { lat: 34.3416, lon: 108.9398 },
+            '天津': { lat: 39.3434, lon: 117.3616 },
+            '苏州': { lat: 31.2989, lon: 120.5853 },
+            '郑州': { lat: 34.7466, lon: 113.6253 },
+            '长沙': { lat: 28.2282, lon: 112.9388 },
+            '青岛': { lat: 36.0671, lon: 120.3826 },
+            '大连': { lat: 38.9140, lon: 121.6147 },
+            '厦门': { lat: 24.4798, lon: 118.0894 },
+            '沈阳': { lat: 41.8057, lon: 123.4315 },
+            '哈尔滨': { lat: 45.8038, lon: 126.5350 },
+            '济南': { lat: 36.6512, lon: 117.1201 }
+        };
+
+        // WMO天气代码到中文描述和图标的映射
+        const weatherCodeMap = {
+            0: { desc: '晴', icon: 'fa-sun' },
+            1: { desc: '晴', icon: 'fa-sun' },
+            2: { desc: '多云', icon: 'fa-cloud-sun' },
+            3: { desc: '多云', icon: 'fa-cloud' },
+            45: { desc: '雾', icon: 'fa-smog' },
+            48: { desc: '雾', icon: 'fa-smog' },
+            51: { desc: '小雨', icon: 'fa-cloud-rain' },
+            53: { desc: '小雨', icon: 'fa-cloud-rain' },
+            55: { desc: '小雨', icon: 'fa-cloud-rain' },
+            61: { desc: '小雨', icon: 'fa-cloud-rain' },
+            63: { desc: '中雨', icon: 'fa-cloud-rain' },
+            65: { desc: '大雨', icon: 'fa-cloud-showers-heavy' },
+            71: { desc: '小雪', icon: 'fa-snowflake' },
+            73: { desc: '中雪', icon: 'fa-snowflake' },
+            75: { desc: '大雪', icon: 'fa-snowflake' },
+            80: { desc: '阵雨', icon: 'fa-cloud-rain' },
+            81: { desc: '阵雨', icon: 'fa-cloud-showers-heavy' },
+            82: { desc: '暴雨', icon: 'fa-cloud-showers-heavy' },
+            95: { desc: '雷阵雨', icon: 'fa-bolt' },
+            96: { desc: '雷阵雨', icon: 'fa-bolt' },
+            99: { desc: '雷阵雨', icon: 'fa-bolt' }
+        };
+
+        function searchWeather(city) {
+            const cityName = city || '北京';
+            const coords = cityCoordinates[cityName];
+            
+            if (coords) {
+                // 使用 Open-Meteo API 获取天气数据
+                const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=temperature_2m,relative_humidity_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`;
+                
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.current && data.daily) {
+                            const current = data.current;
+                            const daily = data.daily;
+                            const weatherCode = current.weather_code;
+                            const weatherInfo = weatherCodeMap[weatherCode] || { desc: '未知', icon: 'fa-sun' };
+                            
+                            // 更新当前天气信息
+                            document.getElementById('cityName').textContent = cityName;
+                            document.getElementById('temperature').textContent = `${Math.round(current.temperature_2m)}°C`;
+                            document.getElementById('weatherDesc').textContent = weatherInfo.desc;
+                            document.getElementById('humidity').textContent = `${Math.round(current.relative_humidity_2m)}%`;
+                            
+                            // 更新天气图标
+                            const weatherIcon = document.getElementById('weatherIcon');
+                            weatherIcon.className = `fas ${weatherInfo.icon} text-lg mr-2 text-white`;
+                            
+                            // 更新3天天气预报
+                            updateForecast(daily);
+                            
+                            // 显示天气预报容器
+                            document.getElementById('forecastContainer').classList.remove('hidden');
+                        } else {
+                            throw new Error('API返回数据格式错误');
+                        }
+                    })
+                    .catch(error => {
+                        console.warn('Open-Meteo API调用失败，使用模拟数据', error);
+                        useMockWeatherData(cityName);
+                    });
+            } else {
+                // 城市不在坐标映射中，使用模拟数据
+                console.warn(`城市 ${cityName} 不在坐标映射中，使用模拟数据`);
+                useMockWeatherData(cityName);
+            }
+        }
+        
+        // 根据IP获取位置并显示天气
+        function getLocationByIP() {
+            // 使用免费的IP定位服务
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.latitude && data.longitude) {
+                        // 直接使用IP返回的经纬度获取天气
+                        getWeatherByCoords(data.latitude, data.longitude, data.city || '本地');
+                    } else {
+                        // IP定位失败，使用北京
+                        searchWeather('北京');
+                    }
+                })
+                .catch(error => {
+                    console.warn('IP定位失败，使用默认城市北京', error);
+                    searchWeather('北京');
+                });
+        }
+        
+        // 根据经纬度获取天气
+        function getWeatherByCoords(lat, lon, cityName) {
+            // 使用 Open-Meteo API 获取天气数据
+            const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`;
+            
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.current && data.daily) {
+                        const current = data.current;
+                        const daily = data.daily;
+                        const weatherCode = current.weather_code;
+                        const weatherInfo = weatherCodeMap[weatherCode] || { desc: '未知', icon: 'fa-sun' };
+                        
+                        // 更新当前天气信息
+                        document.getElementById('cityName').textContent = cityName;
+                        document.getElementById('temperature').textContent = `${Math.round(current.temperature_2m)}°C`;
+                        document.getElementById('weatherDesc').textContent = weatherInfo.desc;
+                        document.getElementById('humidity').textContent = `${Math.round(current.relative_humidity_2m)}%`;
+                        
+                        // 更新天气图标
+                        const weatherIcon = document.getElementById('weatherIcon');
+                        weatherIcon.className = `fas ${weatherInfo.icon} text-lg mr-2 text-white`;
+                        
+                        // 更新3天天气预报
+                        updateForecast(daily);
+                        
+                        // 显示天气预报容器
+                        document.getElementById('forecastContainer').classList.remove('hidden');
+                    } else {
+                        throw new Error('API返回数据格式错误');
+                    }
+                })
+                .catch(error => {
+                    console.warn('Open-Meteo API调用失败，使用模拟数据', error);
+                    useMockWeatherData(cityName);
+                });
+        }
+        
+        // 更新3天天气预报
+        function updateForecast(daily) {
+            const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+            
+            for (let i = 0; i < 3; i++) {
+                const date = new Date(daily.time[i]);
+                const dayName = i === 0 ? '今天' : weekDays[date.getDay()];
+                const weatherCode = daily.weather_code[i];
+                const weatherInfo = weatherCodeMap[weatherCode] || { desc: '未知', icon: 'fa-sun' };
+                const maxTemp = Math.round(daily.temperature_2m_max[i]);
+                const minTemp = Math.round(daily.temperature_2m_min[i]);
+                
+                document.getElementById(`forecastDay${i + 1}`).textContent = dayName;
+                document.getElementById(`forecastIcon${i + 1}`).className = `fas ${weatherInfo.icon} text-lg mb-1`;
+                document.getElementById(`forecastTemp${i + 1}`).textContent = `${minTemp}°~${maxTemp}°`;
+            }
+        }
+        
+        // 使用模拟天气数据（当城市不支持或API不可用时）
+        function useMockWeatherData(cityName) {
+            const mockWeatherData = {
+                '北京': { temp: 25, desc: '晴天', icon: 'fa-sun', humidity: 45 },
+                '上海': { temp: 28, desc: '多云', icon: 'fa-cloud', humidity: 65 },
+                '广州': { temp: 32, desc: '小雨', icon: 'fa-cloud-rain', humidity: 78 },
+                '深圳': { temp: 30, desc: '阴天', icon: 'fa-cloud', humidity: 70 }
+            };
+            
+            const weather = mockWeatherData[cityName] || { temp: 25, desc: '晴天', icon: 'fa-sun', humidity: 45 };
+            
+            document.getElementById('cityName').textContent = cityName;
+            document.getElementById('temperature').textContent = `${weather.temp}°C`;
+            document.getElementById('weatherDesc').textContent = weather.desc;
+            document.getElementById('humidity').textContent = `${weather.humidity}%`;
+            
+            // 更新天气图标
+            const weatherIcon = document.getElementById('weatherIcon');
+            weatherIcon.className = `fas ${weather.icon} text-lg mr-2 text-white`;
+            
+            // 显示天气预报容器
+            document.getElementById('forecastContainer').classList.remove('hidden');
+        }
+        
+        // 添加页面滚动效果
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    section.classList.add('fade-in');
+                }
+            });
+        });
+        
+        // 添加键盘快捷键
+        document.addEventListener('keydown', function(event) {
+            // Ctrl/Cmd + K 聚焦搜索框
+            if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+                event.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+            
+            // ESC 关闭移动端菜单
+            if (event.key === 'Escape') {
+                const menu = document.getElementById('mobileMenu');
+                if (menu.classList.contains('active')) {
+                    toggleMobileMenu();
+                }
+            }
+        });
+        
+        // 性能优化：防抖函数
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // 优化天气搜索防抖
+        const debouncedWeatherSearch = debounce(searchWeather, 300);
+        
+        // 添加触摸手势支持（移动端）
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', function(event) {
+            touchStartX = event.changedTouches[0].screenX;
+        });
+        
+        document.addEventListener('touchend', function(event) {
+            touchEndX = event.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // 向左滑动
+                    console.log('向左滑动');
+                } else {
+                    // 向右滑动 - 打开移动端菜单
+                    if (window.innerWidth <= 768) {
+                        toggleMobileMenu();
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>
