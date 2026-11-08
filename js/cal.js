@@ -1174,7 +1174,7 @@ var getData = (function () {
 		'1006': 1,
 		'1007': 1,
 		'1009': 0
-		}		
+		}
 	};
 	//获取日期数据
 	var getDateObj = function (year, month, day) {
